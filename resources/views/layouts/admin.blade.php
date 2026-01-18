@@ -41,6 +41,91 @@
 </head>
 
 <body>
+    <script>
+    // Context menu handler - must be defined before sidebar loads
+    function handleSidebarContext(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var navLink = e.target.closest('.fluent-nav-link');
+        if (navLink) {
+            showContextMenu(e, navLink);
+        }
+        return false;
+    }
+
+    function showContextMenu(e, link) {
+        // Remove existing menu
+        var old = document.getElementById('ctxMenu');
+        if (old) old.remove();
+
+        var href = link.getAttribute('href');
+        var text = link.querySelector('.fluent-nav-text');
+        text = text ? text.textContent.trim() : 'Link';
+        var isLogout = link.classList.contains('fluent-nav-link-logout');
+        var isActive = link.classList.contains('active');
+
+        var menu = document.createElement('div');
+        menu.id = 'ctxMenu';
+        menu.style.cssText = 'position:fixed;z-index:99999;min-width:180px;background:#fff;border:1px solid #e1e1e1;border-radius:8px;box-shadow:0 8px 32px rgba(0,0,0,0.15);padding:6px 0;';
+
+        var html = '<div style="padding:8px 14px 6px;font-size:11px;font-weight:600;color:#605e5c;border-bottom:1px solid #f3f2f1;margin-bottom:4px;">' + text + '</div>';
+
+        if (!isLogout && href && href !== '#') {
+            html += '<div class="ctx-item" data-action="open" style="display:flex;align-items:center;gap:10px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0078d4;"><i class="ri-arrow-right-line"></i><span>Open</span></div>';
+            html += '<div class="ctx-item" data-action="newtab" style="display:flex;align-items:center;gap:10px;padding:8px 14px;font-size:13px;cursor:pointer;"><i class="ri-external-link-line"></i><span>Open in New Tab</span></div>';
+            html += '<div class="ctx-item" data-action="copy" style="display:flex;align-items:center;gap:10px;padding:8px 14px;font-size:13px;cursor:pointer;"><i class="ri-link"></i><span>Copy Link</span></div>';
+            if (isActive) {
+                html += '<div style="height:1px;background:#f3f2f1;margin:6px 0;"></div>';
+                html += '<div class="ctx-item" data-action="refresh" style="display:flex;align-items:center;gap:10px;padding:8px 14px;font-size:13px;cursor:pointer;"><i class="ri-refresh-line"></i><span>Refresh</span></div>';
+            }
+        }
+        if (isLogout) {
+            html += '<div class="ctx-item" data-action="logout" style="display:flex;align-items:center;gap:10px;padding:8px 14px;font-size:13px;cursor:pointer;color:#d13438;"><i class="ri-logout-box-line"></i><span>Sign Out</span></div>';
+        }
+
+        menu.innerHTML = html;
+
+        // Position
+        var x = e.clientX, y = e.clientY;
+        menu.style.left = x + 'px';
+        menu.style.top = y + 'px';
+        document.body.appendChild(menu);
+
+        // Adjust if off screen
+        var rect = menu.getBoundingClientRect();
+        if (rect.right > window.innerWidth) menu.style.left = (x - rect.width) + 'px';
+        if (rect.bottom > window.innerHeight) menu.style.top = (y - rect.height) + 'px';
+
+        // Hover effect
+        menu.querySelectorAll('.ctx-item').forEach(function(item) {
+            item.onmouseenter = function() { this.style.background = '#f3f2f1'; };
+            item.onmouseleave = function() { this.style.background = 'transparent'; };
+            item.onclick = function() {
+                var action = this.dataset.action;
+                menu.remove();
+                if (action === 'open') window.location.href = href;
+                else if (action === 'newtab') window.open(href, '_blank');
+                else if (action === 'copy') {
+                    navigator.clipboard.writeText(new URL(href, location.origin).href);
+                }
+                else if (action === 'refresh') location.reload();
+                else if (action === 'logout') document.getElementById('logoutform').submit();
+            };
+        });
+
+        // Close on click outside
+        setTimeout(function() {
+            document.addEventListener('click', function closeCtx(ev) {
+                if (!menu.contains(ev.target)) {
+                    menu.remove();
+                    document.removeEventListener('click', closeCtx);
+                }
+            });
+        }, 10);
+    }
+    </script>
+
     <!-- Top Progress Bar -->
     <div class="fluent-progress-bar" id="progressBar">
         <div class="fluent-progress-bar-inner"></div>

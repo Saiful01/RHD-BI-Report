@@ -1,4 +1,4 @@
-<aside class="fluent-sidebar" id="sidebar">
+<aside class="fluent-sidebar" id="sidebar" oncontextmenu="return handleSidebarContext(event);">
     <!-- Brand -->
     <div class="fluent-sidebar-brand">
         <div class="fluent-sidebar-brand-logo">
