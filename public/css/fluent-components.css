@@ -682,10 +682,17 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--fluent-space-lg);
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: var(--fluent-sidebar-collapsed-width);
+  right: 0;
   z-index: var(--fluent-z-sticky);
   box-shadow: var(--fluent-shadow-2);
+  transition: left var(--fluent-transition-normal);
+}
+
+.fluent-sidebar.expanded ~ .fluent-main .fluent-header {
+  left: var(--fluent-sidebar-width);
 }
 
 .fluent-header-left {
@@ -769,6 +776,7 @@
 .fluent-content {
   flex: 1;
   padding: var(--fluent-space-lg);
+  padding-top: calc(var(--fluent-header-height) + var(--fluent-space-lg));
   overflow-x: hidden;
   max-width: 100%;
 }
@@ -2038,6 +2046,7 @@ code {
 
   .fluent-header {
     padding: 0 12px;
+    left: 0 !important;
   }
 
   .fluent-header-title {
