@@ -34,13 +34,14 @@
     }
 
     function bindEvents() {
-        // Right-click on nav links
-        document.addEventListener('contextmenu', handleContextMenu);
+        // Right-click on sidebar - use capture phase to intercept before browser
+        document.addEventListener('contextmenu', handleContextMenu, true);
 
         // Close menu on overlay click
         overlayElement.addEventListener('click', hideMenu);
         overlayElement.addEventListener('contextmenu', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             hideMenu();
         });
 
@@ -57,13 +58,25 @@
     }
 
     function handleContextMenu(e) {
+        // Check if right-click is on sidebar
+        const sidebar = e.target.closest('.fluent-sidebar');
         const navLink = e.target.closest('.fluent-nav-link');
+        const navItem = e.target.closest('.fluent-nav-item');
 
-        if (navLink) {
+        // If clicking anywhere in sidebar, prevent default browser menu
+        if (sidebar) {
             e.preventDefault();
-            currentTarget = navLink;
-            showNavMenu(e, navLink);
-            return;
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            if (navLink) {
+                currentTarget = navLink;
+                showNavMenu(e, navLink);
+            } else {
+                // Just hide any existing menu if clicking on non-link area
+                hideMenu();
+            }
+            return false;
         }
 
         // If clicked elsewhere, hide menu
