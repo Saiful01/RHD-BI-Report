@@ -200,8 +200,30 @@
 
     <!-- Theme Scripts -->
     <script src="{{ asset('js/fluent-theme.js') }}"></script>
-    <script src="{{ asset('js/context-menu.js') }}"></script>
+    <script src="{{ asset('js/context-menu.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
+
+    <!-- Backup: Ensure sidebar context menu is disabled -->
+    <script>
+    (function(){
+        var sidebar = document.getElementById('sidebar');
+        if(sidebar) {
+            sidebar.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            }, true);
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            var sb = document.getElementById('sidebar') || document.querySelector('.fluent-sidebar');
+            if(sb) {
+                sb.addEventListener('contextmenu', function(e) {
+                    e.preventDefault();
+                    return false;
+                }, true);
+            }
+        });
+    })();
+    </script>
 
     <script>
         $(function() {
