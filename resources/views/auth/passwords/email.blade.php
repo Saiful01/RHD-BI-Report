@@ -1,42 +1,72 @@
 @extends('layouts.app')
+@section('title', trans('global.reset_password') . ' - ' . trans('panel.site_title'))
 @section('content')
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card mx-4">
-            <div class="card-body p-4">
-                <h1>{{ trans('panel.site_title') }}</h1>
+<div class="auth-card">
+    <div class="auth-header">
+        <div class="auth-logo">
+            <i class="ri-key-line"></i>
+        </div>
+        <h1 class="auth-title">{{ trans('global.reset_password') }}</h1>
+        <p class="auth-subtitle">Enter your email to receive a password reset link</p>
+    </div>
 
-                <p class="text-muted">{{ trans('global.reset_password') }}</p>
+    <div class="auth-body">
+        @if(session('status'))
+            <div class="fluent-alert fluent-alert-success mb-4">
+                <span class="fluent-alert-icon">
+                    <i class="ri-checkbox-circle-line"></i>
+                </span>
+                <div class="fluent-alert-content">
+                    {{ session('status') }}
+                </div>
+            </div>
+        @endif
 
-                @if(session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
+        <form method="POST" action="{{ route('password.email') }}">
+            @csrf
+
+            <div class="fluent-form-group">
+                <label class="fluent-label" for="email">
+                    <i class="ri-mail-line mr-1"></i>
+                    {{ trans('global.login_email') }}
+                </label>
+                <div class="fluent-input-group">
+                    <span class="fluent-input-icon">
+                        <i class="ri-mail-line"></i>
+                    </span>
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        class="fluent-input {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                        required
+                        autocomplete="email"
+                        autofocus
+                        placeholder="Enter your email address"
+                        value="{{ old('email') }}"
+                    >
+                </div>
+                @if($errors->has('email'))
+                    <div class="fluent-invalid-feedback">
+                        {{ $errors->first('email') }}
                     </div>
                 @endif
-
-                <form method="POST" action="{{ route('password.email') }}">
-                    @csrf
-
-                    <div class="form-group">
-                        <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" required autocomplete="email" autofocus placeholder="{{ trans('global.login_email') }}" value="{{ old('email') }}">
-
-                        @if($errors->has('email'))
-                            <div class="invalid-feedback">
-                                {{ $errors->first('email') }}
-                            </div>
-                        @endif
-                    </div>
-
-                    <div class="row">
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary btn-flat btn-block">
-                                {{ trans('global.send_password') }}
-                            </button>
-                        </div>
-                    </div>
-                </form>
             </div>
-        </div>
+
+            <div class="fluent-form-group mb-0">
+                <button type="submit" class="fluent-btn fluent-btn-primary w-100 fluent-btn-lg">
+                    <i class="ri-mail-send-line mr-2"></i>
+                    {{ trans('global.send_password') }}
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="auth-footer">
+        <a href="{{ route('login') }}" class="text-primary">
+            <i class="ri-arrow-left-line mr-1"></i>
+            Back to Login
+        </a>
     </div>
 </div>
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tender;
+use App\Models\TenderDivision;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -15,7 +16,6 @@ class TenderController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-
             $query = Tender::query();
 
             if ($request->filled('tenderid')) {
@@ -36,48 +36,30 @@ class TenderController extends Controller
             if ($request->filled('package_no')) {
                 $query->where('tender_package_no', 'LIKE', '%' . $request->package_no . '%');
             }
-
             if ($request->filled('from_date') && $request->filled('to_date')) {
                 $query->whereBetween('date_notification_award', [$request->from_date, $request->to_date]);
             }
 
-            return DataTables::of($query)
-                ->addColumn('placeholder', '&nbsp;')
-                ->editColumn('tender_package_no', function ($row) {
-                    return $row->tender_package_no ?? '';
-                })
-                ->editColumn('date_notification_award', function ($row) {
-                    return $row->date_notification_award ? $row->date_notification_award->format('d-M-Y') : '';
-                })
-                ->addColumn('entity_info', function ($row) {
-                    return "Code: {$row->procuring_entity_code}<br>" .
-                        "District: {$row->procuring_entity_district}<br>" .
-                        "Method: <span class='badge badge-info'>{$row->procurement_method}</span>";
-                })
-                ->addColumn('value_cr', function ($row) {
-                    $cr = $row->contract_value / 10000000;
-                    return number_format($cr, 2) . ' Cr';
-                })
-                ->addColumn('actions', function ($row) {
-                    $viewUrl = route('admin.tender.show', $row->id);
-                    $itemUrl = route('admin.tender.viewItems', $row->id);
-
-                    return '<div class="">
-            <a class="btn btn-xs btn-primary" href="' . $viewUrl . '">View</a>
-            <a class="btn btn-xs btn-info" href="' . $itemUrl . '">Items</a>
-        </div>';
-                })
-                ->rawColumns(['actions', 'placeholder', 'entity_info'])
-                ->make(true);
+            $perPage = $request->get('per_page', 12);
+            return $query->orderBy('date_notification_award', 'desc')->paginate($perPage);
         }
 
+        // Cache dropdown values for 1 hour to avoid slow queries on every page load
+        $ministries = cache()->remember('tender_ministries', 3600, function () {
+            return Tender::distinct()->pluck('ministry_division')->filter()->sort()->values()->toArray();
+        });
+        $districts = cache()->remember('tender_districts', 3600, function () {
+            return Tender::distinct()->pluck('procuring_entity_district')->filter()->sort()->values()->toArray();
+        });
+        $methods = cache()->remember('tender_methods', 3600, function () {
+            return Tender::distinct()->pluck('procurement_method')->filter()->sort()->values()->toArray();
+        });
 
-        $ministries = Tender::distinct()->pluck('ministry_division')->filter()->toArray();
-        $districts = Tender::distinct()->pluck('procuring_entity_district')->filter()->toArray();
-        $methods = Tender::distinct()->pluck('procurement_method')->filter()->toArray();
-        $suppliers = Tender::distinct()->pluck('supplier_name')->filter()->toArray();
+        // Suppliers are loaded via AJAX to avoid slow initial page load
+        // Get divisions for the Tender Items tab
+        $divisions = TenderDivision::pluck('division', 'id');
 
-        return view('admin.tenders.index', compact('ministries', 'methods', 'districts', 'suppliers'));
+        return view('admin.tenders.index', compact('ministries', 'methods', 'districts', 'divisions'));
     }
 
 
@@ -93,6 +75,24 @@ class TenderController extends Controller
         $response = [];
         foreach ($tenders as $tender) {
             $response[] = ['id' => $tender->tenderid, 'text' => $tender->tenderid];
+        }
+        return response()->json($response);
+    }
+
+    public function supplierSearch(Request $request)
+    {
+        $search = $request->q;
+        $suppliers = Tender::select('supplier_name')
+            ->where('supplier_name', 'LIKE', "%$search%")
+            ->distinct()
+            ->limit(15)
+            ->pluck('supplier_name');
+
+        $response = [];
+        foreach ($suppliers as $supplier) {
+            if ($supplier) {
+                $response[] = ['id' => $supplier, 'text' => $supplier];
+            }
         }
         return response()->json($response);
     }
@@ -116,24 +116,40 @@ class TenderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Tender $tender)
+    public function show(Tender $tender, Request $request)
     {
         $tender->load('items');
 
-        return view('admin.tenders.show', compact('tender'));
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'tender' => $tender
+            ]);
+        }
+
+        // Redirect to index since we use modals now
+        return redirect()->route('admin.tender.index');
     }
 
-    public function viewItems(Tender $tender)
+    public function viewItems(Tender $tender, Request $request)
     {
-
         $tender->load('items');
-
 
         $totalAmount = $tender->items->sum(function ($item) {
             return $item->item_quantity * $item->item_rate;
         });
 
-        return view('admin.tenders.item', compact('tender', 'totalAmount'));
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'tender' => $tender,
+                'items' => $tender->items,
+                'totalAmount' => $totalAmount
+            ]);
+        }
+
+        // Redirect to index since we use modals now
+        return redirect()->route('admin.tender.index');
     }
 
     /**

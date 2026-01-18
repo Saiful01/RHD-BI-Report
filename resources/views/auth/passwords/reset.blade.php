@@ -1,50 +1,108 @@
 @extends('layouts.app')
+@section('title', trans('global.reset_password') . ' - ' . trans('panel.site_title'))
 @section('content')
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card mx-4">
-            <div class="card-body p-4">
-                <h1>{{ trans('panel.site_title') }}</h1>
-
-                <p class="text-muted">{{ trans('global.reset_password') }}</p>
-
-                <form method="POST" action="{{ route('password.request') }}">
-                    @csrf
-
-                    <input name="token" value="{{ $token }}" type="hidden">
-
-                    <div class="form-group">
-                        <input id="email" type="email" name="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" required autocomplete="email" autofocus placeholder="{{ trans('global.login_email') }}" value="{{ $email ?? old('email') }}">
-
-                        @if($errors->has('email'))
-                            <div class="invalid-feedback">
-                                {{ $errors->first('email') }}
-                            </div>
-                        @endif
-                    </div>
-                    <div class="form-group">
-                        <input id="password" type="password" name="password" class="form-control" required placeholder="{{ trans('global.login_password') }}">
-
-                        @if($errors->has('password'))
-                            <div class="invalid-feedback">
-                                {{ $errors->first('password') }}
-                            </div>
-                        @endif
-                    </div>
-                    <div class="form-group">
-                        <input id="password-confirm" type="password" name="password_confirmation" class="form-control" required placeholder="{{ trans('global.login_password_confirmation') }}">
-                    </div>
-
-                    <div class="row">
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary btn-block btn-flat">
-                                {{ trans('global.reset_password') }}
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+<div class="auth-card">
+    <div class="auth-header">
+        <div class="auth-logo">
+            <i class="ri-lock-password-line"></i>
         </div>
+        <h1 class="auth-title">{{ trans('global.reset_password') }}</h1>
+        <p class="auth-subtitle">Create a new password for your account</p>
+    </div>
+
+    <div class="auth-body">
+        <form method="POST" action="{{ route('password.request') }}">
+            @csrf
+
+            <input name="token" value="{{ $token }}" type="hidden">
+
+            <div class="fluent-form-group">
+                <label class="fluent-label" for="email">
+                    <i class="ri-mail-line mr-1"></i>
+                    {{ trans('global.login_email') }}
+                </label>
+                <div class="fluent-input-group">
+                    <span class="fluent-input-icon">
+                        <i class="ri-mail-line"></i>
+                    </span>
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        class="fluent-input {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                        required
+                        autocomplete="email"
+                        autofocus
+                        placeholder="Enter your email"
+                        value="{{ $email ?? old('email') }}"
+                    >
+                </div>
+                @if($errors->has('email'))
+                    <div class="fluent-invalid-feedback">
+                        {{ $errors->first('email') }}
+                    </div>
+                @endif
+            </div>
+
+            <div class="fluent-form-group">
+                <label class="fluent-label" for="password">
+                    <i class="ri-lock-line mr-1"></i>
+                    New {{ trans('global.login_password') }}
+                </label>
+                <div class="fluent-input-group">
+                    <span class="fluent-input-icon">
+                        <i class="ri-lock-line"></i>
+                    </span>
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        class="fluent-input {{ $errors->has('password') ? 'is-invalid' : '' }}"
+                        required
+                        placeholder="Enter new password"
+                    >
+                </div>
+                @if($errors->has('password'))
+                    <div class="fluent-invalid-feedback">
+                        {{ $errors->first('password') }}
+                    </div>
+                @endif
+            </div>
+
+            <div class="fluent-form-group">
+                <label class="fluent-label" for="password-confirm">
+                    <i class="ri-lock-2-line mr-1"></i>
+                    {{ trans('global.login_password_confirmation') }}
+                </label>
+                <div class="fluent-input-group">
+                    <span class="fluent-input-icon">
+                        <i class="ri-lock-2-line"></i>
+                    </span>
+                    <input
+                        id="password-confirm"
+                        name="password_confirmation"
+                        type="password"
+                        class="fluent-input"
+                        required
+                        placeholder="Confirm new password"
+                    >
+                </div>
+            </div>
+
+            <div class="fluent-form-group mb-0">
+                <button type="submit" class="fluent-btn fluent-btn-primary w-100 fluent-btn-lg">
+                    <i class="ri-refresh-line mr-2"></i>
+                    {{ trans('global.reset_password') }}
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="auth-footer">
+        <a href="{{ route('login') }}" class="text-primary">
+            <i class="ri-arrow-left-line mr-1"></i>
+            Back to Login
+        </a>
     </div>
 </div>
 @endsection

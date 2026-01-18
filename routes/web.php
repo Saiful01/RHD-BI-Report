@@ -6,10 +6,10 @@ use App\Http\Controllers\Admin\TenderItemController;
 Route::redirect('/', '/login');
 Route::get('/home', function () {
     if (session('status')) {
-        return redirect()->route('admin.home')->with('status', session('status'));
+        return redirect()->route('admin.daily-weathers.index')->with('status', session('status'));
     }
 
-    return redirect()->route('admin.home');
+    return redirect()->route('admin.daily-weathers.index');
 });
 
 Auth::routes(['register' => false]);
@@ -30,10 +30,18 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Station
     Route::delete('stations/destroy', 'StationController@massDestroy')->name('stations.massDestroy');
+    Route::get('stations/{station}/analytics', 'StationController@analytics')->name('stations.analytics');
+    Route::get('stations/{station}/analytics-data', 'StationController@analyticsData')->name('stations.analyticsData');
     Route::resource('stations', 'StationController');
 
     // Daily Weather
     Route::delete('daily-weathers/destroy', 'DailyWeatherController@massDestroy')->name('daily-weathers.massDestroy');
+    Route::get('daily-weathers/dashboard-data', 'DailyWeatherController@dashboardData')->name('daily-weathers.dashboardData');
+    Route::get('daily-weathers/calendar-data', 'DailyWeatherController@calendarData')->name('daily-weathers.calendarData');
+    Route::get('daily-weathers/comparison-data', 'DailyWeatherController@comparisonData')->name('daily-weathers.comparisonData');
+    Route::get('daily-weathers/records-data', 'DailyWeatherController@recordsData')->name('daily-weathers.recordsData');
+    Route::get('daily-weathers/weekly-trend', 'DailyWeatherController@weeklyTrend')->name('daily-weathers.weeklyTrend');
+    Route::get('daily-weathers/weather-report-data', 'DailyWeatherController@weatherReportData')->name('daily-weathers.weatherReportData');
     Route::resource('daily-weathers', 'DailyWeatherController');
 
     // Weather Report
@@ -46,6 +54,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('/tender/{tender}/items', [TenderController::class, 'viewItems'])->name('tender.viewItems');
 
     Route::get('tender-select-search', [TenderController::class, 'selectSearch'])->name('tender.selectSearch');
+    Route::get('tender-supplier-search', [TenderController::class, 'supplierSearch'])->name('tender.supplierSearch');
 
     Route::get('tender-item-select-search', [TenderItemController::class, 'tenderSearch'])->name('tender.item.selectSearch');
     Route::get('supplier-search', [TenderItemController::class, 'supplierSearch'])->name('supplier-search');

@@ -1,79 +1,132 @@
 @extends('layouts.app')
+@section('title', 'Login - ' . trans('panel.site_title'))
 @section('content')
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card mx-4">
-            <div class="card-body p-4">
-                <h1>{{ trans('panel.site_title') }}</h1>
+<div class="auth-card">
+    <div class="auth-header">
+        <div class="auth-logo">
+            <i class="ri-road-map-line"></i>
+        </div>
+        <h1 class="auth-title">{{ trans('panel.site_title') }}</h1>
+        <p class="auth-subtitle">Sign in to your account</p>
+    </div>
 
-                <p class="text-muted">{{ trans('global.login') }}</p>
+    <div class="auth-body">
+        @if(session('message'))
+            <div class="fluent-alert fluent-alert-info mb-4">
+                <span class="fluent-alert-icon">
+                    <i class="ri-information-line"></i>
+                </span>
+                <div class="fluent-alert-content">
+                    {{ session('message') }}
+                </div>
+            </div>
+        @endif
 
-                @if(session('message'))
-                    <div class="alert alert-info" role="alert">
-                        {{ session('message') }}
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+
+            <div class="fluent-form-group">
+                <label class="fluent-label" for="email">
+                    <i class="ri-mail-line mr-1"></i>
+                    {{ trans('global.login_email') }}
+                </label>
+                <div class="fluent-input-group">
+                    <span class="fluent-input-icon">
+                        <i class="ri-user-line"></i>
+                    </span>
+                    <input
+                        id="email"
+                        name="email"
+                        type="text"
+                        class="fluent-input {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                        required
+                        autocomplete="email"
+                        autofocus
+                        placeholder="Enter your email"
+                        value="{{ old('email', null) }}"
+                    >
+                </div>
+                @if($errors->has('email'))
+                    <div class="fluent-invalid-feedback">
+                        {{ $errors->first('email') }}
                     </div>
                 @endif
-
-                <form method="POST" action="{{ route('login') }}">
-                    @csrf
-
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">
-                                <i class="fa fa-user"></i>
-                            </span>
-                        </div>
-
-                        <input id="email" name="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" required autocomplete="email" autofocus placeholder="{{ trans('global.login_email') }}" value="{{ old('email', null) }}">
-
-                        @if($errors->has('email'))
-                            <div class="invalid-feedback">
-                                {{ $errors->first('email') }}
-                            </div>
-                        @endif
-                    </div>
-
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-lock"></i></span>
-                        </div>
-
-                        <input id="password" name="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" required placeholder="{{ trans('global.login_password') }}">
-
-                        @if($errors->has('password'))
-                            <div class="invalid-feedback">
-                                {{ $errors->first('password') }}
-                            </div>
-                        @endif
-                    </div>
-
-                    <div class="input-group mb-4">
-                        <div class="form-check checkbox">
-                            <input class="form-check-input" name="remember" type="checkbox" id="remember" style="vertical-align: middle;" />
-                            <label class="form-check-label" for="remember" style="vertical-align: middle;">
-                                {{ trans('global.remember_me') }}
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-6">
-                            <button type="submit" class="btn btn-primary px-4">
-                                {{ trans('global.login') }}
-                            </button>
-                        </div>
-                        <div class="col-6 text-right">
-                            @if(Route::has('password.request'))
-                                <a class="btn btn-link px-0" href="{{ route('password.request') }}">
-                                    {{ trans('global.forgot_password') }}
-                                </a><br>
-                            @endif
-
-                        </div>
-                    </div>
-                </form>
             </div>
-        </div>
+
+            <div class="fluent-form-group">
+                <label class="fluent-label" for="password">
+                    <i class="ri-lock-line mr-1"></i>
+                    {{ trans('global.login_password') }}
+                </label>
+                <div class="fluent-input-group">
+                    <span class="fluent-input-icon">
+                        <i class="ri-lock-line"></i>
+                    </span>
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        class="fluent-input {{ $errors->has('password') ? 'is-invalid' : '' }}"
+                        required
+                        placeholder="Enter your password"
+                    >
+                </div>
+                @if($errors->has('password'))
+                    <div class="fluent-invalid-feedback">
+                        {{ $errors->first('password') }}
+                    </div>
+                @endif
+            </div>
+
+            <div class="fluent-form-group">
+                <label class="fluent-checkbox">
+                    <input type="checkbox" name="remember" id="remember">
+                    <span>{{ trans('global.remember_me') }}</span>
+                </label>
+            </div>
+
+            <div class="fluent-form-group mb-0">
+                <button type="submit" class="fluent-btn fluent-btn-primary w-100 fluent-btn-lg login-btn" id="loginBtn">
+                    <span class="btn-text">
+                        <i class="ri-login-box-line mr-2"></i>
+                        {{ trans('global.login') }}
+                    </span>
+                    <span class="btn-loader" style="display: none;">
+                        <svg class="spinner" viewBox="0 0 24 24" width="20" height="20">
+                            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="31.4" stroke-linecap="round">
+                                <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="0.8s" repeatCount="indefinite"/>
+                            </circle>
+                        </svg>
+                        Signing in...
+                    </span>
+                </button>
+            </div>
+        </form>
+
+<script>
+document.querySelector('form').addEventListener('submit', function(e) {
+    const btn = document.getElementById('loginBtn');
+    const btnText = btn.querySelector('.btn-text');
+    const btnLoader = btn.querySelector('.btn-loader');
+
+    btn.disabled = true;
+    btn.style.opacity = '0.8';
+    btnText.style.display = 'none';
+    btnLoader.style.display = 'inline-flex';
+    btnLoader.style.alignItems = 'center';
+    btnLoader.style.justifyContent = 'center';
+    btnLoader.style.gap = '8px';
+});
+</script>
     </div>
+
+    @if(Route::has('password.request'))
+        <div class="auth-footer">
+            <a href="{{ route('password.request') }}" class="text-primary">
+                <i class="ri-key-line mr-1"></i>
+                {{ trans('global.forgot_password') }}
+            </a>
+        </div>
+    @endif
 </div>
 @endsection

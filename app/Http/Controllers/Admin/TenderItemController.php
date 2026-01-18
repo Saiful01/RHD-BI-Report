@@ -19,48 +19,32 @@ class TenderItemController extends Controller
         if ($request->ajax()) {
             $query = TenderItem::with(['tender', 'division'])->select('tender_items.*');
 
-            // Tender ID Filter
             if ($request->filled('tender_id_filter')) {
                 $query->whereHas('tender', function ($q) use ($request) {
                     $q->where('tenderid', $request->tender_id_filter);
                 });
             }
 
-            // Division Filter
             if ($request->filled('division_id')) {
                 $query->where('division_id', $request->division_id);
             }
 
-
             if ($request->filled('supplier_name')) {
                 $query->whereHas('tender', function ($q) use ($request) {
-
                     $q->where('supplier_name', $request->supplier_name);
                 });
             }
-
 
             if ($request->filled('item_code')) {
                 $query->where('item_code', $request->item_code);
             }
 
-
             if ($request->filled('item_name')) {
                 $query->where('item_name', $request->item_name);
             }
 
-            return DataTables::of($query)
-                ->addColumn('placeholder', '&nbsp;')
-                ->addColumn('tender_id_display', fn($row) => $row->tender->tenderid ?? 'N/A')
-                ->addColumn('division_name', fn($row) => $row->division->division ?? 'N/A')
-                ->addColumn('supplier', fn($row) => $row->tender->supplier_name ?? 'N/A')
-                ->editColumn('item_quantity', fn($row) => number_format($row->item_quantity, 2))
-                ->editColumn('item_rate', fn($row) => number_format($row->item_rate, 2))
-                ->addColumn('total_amount', function ($row) {
-                    return number_format($row->item_quantity * $row->item_rate, 2);
-                })
-                ->rawColumns(['placeholder'])
-                ->make(true);
+            $perPage = $request->get('per_page', 12);
+            return $query->orderBy('id', 'desc')->paginate($perPage);
         }
 
         $divisions = TenderDivision::pluck('division', 'id');
@@ -214,9 +198,18 @@ class TenderItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TenderItem $tenderItem)
+    public function show(TenderItem $tenderItem, Request $request)
     {
-        //
+        $tenderItem->load(['tender', 'division']);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'item' => $tenderItem
+            ]);
+        }
+
+        return redirect()->route('admin.tender-item.index');
     }
 
     /**

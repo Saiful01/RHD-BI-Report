@@ -1,0 +1,205 @@
+/* ============================================
+   Azure Fluent UI Theme - CSS Variables & Base
+   ============================================ */
+
+:root {
+  /* Primary Colors - Azure Blue */
+  --fluent-primary: #0078D4;
+  --fluent-primary-hover: #106EBE;
+  --fluent-primary-active: #005A9E;
+  --fluent-primary-light: #DEECF9;
+  --fluent-primary-lighter: #EFF6FC;
+
+  /* Secondary Colors */
+  --fluent-secondary: #2B88D8;
+  --fluent-secondary-hover: #1A7BCB;
+
+  /* Neutral Colors - Azure Fluent UI Light Theme */
+  --fluent-black: #000000;
+  --fluent-gray-190: #201F1E;
+  --fluent-gray-160: #323130;
+  --fluent-gray-130: #605E5C;
+  --fluent-gray-90: #A19F9D;
+  --fluent-gray-60: #C8C6C4;
+  --fluent-gray-40: #D2D0CE;
+  --fluent-gray-30: #EDEBE9;
+  --fluent-gray-20: #F3F2F1;
+  --fluent-gray-10: #FAF9F8;
+  --fluent-white: #FFFFFF;
+
+  /* Semantic Colors */
+  --fluent-success: #107C10;
+  --fluent-success-light: #DFF6DD;
+  --fluent-warning: #FFB900;
+  --fluent-warning-light: #FFF4CE;
+  --fluent-error: #D13438;
+  --fluent-error-light: #FDE7E9;
+  --fluent-info: #0078D4;
+  --fluent-info-light: #DEECF9;
+
+  /* Background Colors */
+  --fluent-bg-primary: #FFFFFF;
+  --fluent-bg-secondary: #FAF9F8;
+  --fluent-bg-tertiary: #F3F2F1;
+  --fluent-bg-sidebar: #2B2B2B;
+  --fluent-bg-sidebar-hover: #3D3D3D;
+  --fluent-bg-sidebar-active: #0078D4;
+
+  /* Surface & Card Colors */
+  --fluent-surface: #FFFFFF;
+  --fluent-card-bg: #FFFFFF;
+  --fluent-border: #EDEBE9;
+
+  /* Text Colors */
+  --fluent-text-primary: #323130;
+  --fluent-text-secondary: #605E5C;
+  --fluent-text-tertiary: #A19F9D;
+  --fluent-text-disabled: #A19F9D;
+  --fluent-text-white: #FFFFFF;
+  --fluent-text-link: #0078D4;
+
+  /* Shadows - Fluent Elevation */
+  --fluent-shadow-2: 0 1.6px 3.6px 0 rgba(0,0,0,0.132), 0 0.3px 0.9px 0 rgba(0,0,0,0.108);
+  --fluent-shadow-4: 0 3.2px 7.2px 0 rgba(0,0,0,0.132), 0 0.6px 1.8px 0 rgba(0,0,0,0.108);
+  --fluent-shadow-8: 0 6.4px 14.4px 0 rgba(0,0,0,0.132), 0 1.2px 3.6px 0 rgba(0,0,0,0.108);
+  --fluent-shadow-16: 0 12.8px 28.8px 0 rgba(0,0,0,0.132), 0 2.4px 7.2px 0 rgba(0,0,0,0.108);
+  --fluent-shadow-64: 0 25.6px 57.6px 0 rgba(0,0,0,0.22), 0 4.8px 14.4px 0 rgba(0,0,0,0.18);
+  --fluent-shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+  --fluent-shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+
+  /* Border Radius */
+  --fluent-radius-sm: 2px;
+  --fluent-radius-md: 4px;
+  --fluent-radius-lg: 8px;
+  --fluent-radius-xl: 12px;
+  --fluent-radius-round: 50%;
+
+  /* Spacing (8px grid) */
+  --fluent-space-xxs: 4px;
+  --fluent-space-xs: 8px;
+  --fluent-space-sm: 12px;
+  --fluent-space-md: 16px;
+  --fluent-space-lg: 24px;
+  --fluent-space-xl: 32px;
+  --fluent-space-xxl: 48px;
+
+  /* Typography */
+  --fluent-font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+  --fluent-font-size-xs: 10px;
+  --fluent-font-size-sm: 12px;
+  --fluent-font-size-md: 14px;
+  --fluent-font-size-lg: 16px;
+  --fluent-font-size-xl: 20px;
+  --fluent-font-size-xxl: 24px;
+  --fluent-font-size-hero: 32px;
+
+  --fluent-font-weight-regular: 400;
+  --fluent-font-weight-semibold: 600;
+  --fluent-font-weight-bold: 700;
+
+  /* Transitions */
+  --fluent-transition-fast: 0.1s ease-in-out;
+  --fluent-transition-normal: 0.2s ease-in-out;
+  --fluent-transition-slow: 0.3s ease-in-out;
+
+  /* Z-Index Scale */
+  --fluent-z-dropdown: 1000;
+  --fluent-z-sticky: 1020;
+  --fluent-z-fixed: 1030;
+  --fluent-z-modal-backdrop: 1040;
+  --fluent-z-modal: 1050;
+  --fluent-z-popover: 1060;
+  --fluent-z-tooltip: 1070;
+
+  /* Layout */
+  --fluent-sidebar-width: 260px;
+  --fluent-sidebar-collapsed-width: 64px;
+  --fluent-header-height: 56px;
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--fluent-font-family);
+  font-size: var(--fluent-font-size-md);
+  font-weight: var(--fluent-font-weight-regular);
+  line-height: 1.5;
+  color: var(--fluent-text-primary);
+  background-color: var(--fluent-bg-secondary);
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: var(--fluent-text-link);
+  text-decoration: none;
+  transition: color var(--fluent-transition-fast);
+}
+
+a:hover {
+  color: var(--fluent-primary-hover);
+  text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--fluent-font-weight-semibold);
+  color: var(--fluent-text-primary);
+  margin-top: 0;
+  margin-bottom: var(--fluent-space-sm);
+  line-height: 1.3;
+}
+
+h1 { font-size: var(--fluent-font-size-hero); }
+h2 { font-size: var(--fluent-font-size-xxl); }
+h3 { font-size: var(--fluent-font-size-xl); }
+h4 { font-size: var(--fluent-font-size-lg); }
+h5 { font-size: var(--fluent-font-size-md); }
+h6 { font-size: var(--fluent-font-size-sm); }
+
+p {
+  margin-top: 0;
+  margin-bottom: var(--fluent-space-md);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--fluent-primary-light);
+  color: var(--fluent-text-primary);
+}
+
+/* Focus visible */
+:focus-visible {
+  outline: 2px solid var(--fluent-primary);
+  outline-offset: 2px;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--fluent-gray-20);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--fluent-gray-60);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--fluent-gray-90);
+}

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Gate;
@@ -16,11 +17,13 @@ class UsersController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('user_management_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $users = User::with(['roles'])->get();
+        $roles = Role::with(['permissions'])->get();
+        $permissions = Permission::all();
 
-        return view('admin.users.index', compact('users'));
+        return view('admin.users.index', compact('users', 'roles', 'permissions'));
     }
 
     public function create()

@@ -54,6 +54,23 @@ class DailyWeather extends Model
 
     public function setRecordDateAttribute($value)
     {
-        $this->attributes['record_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+        if (!$value) {
+            $this->attributes['record_date'] = null;
+            return;
+        }
+
+        // Try to parse the date in various formats
+        try {
+            // First try the panel date format (d/m/Y)
+            $this->attributes['record_date'] = Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d');
+        } catch (\Exception $e) {
+            try {
+                // Try Y-m-d format
+                $this->attributes['record_date'] = Carbon::createFromFormat('Y-m-d', $value)->format('Y-m-d');
+            } catch (\Exception $e) {
+                // Fallback to Carbon parse
+                $this->attributes['record_date'] = Carbon::parse($value)->format('Y-m-d');
+            }
+        }
     }
 }
