@@ -67,12 +67,12 @@
                 </table>
             </div>
 
-            <div class="mt-4 py-3  text-center border">
+          {{--  <div class="mt-4 py-3  text-center border">
                 <p class="mb-2 text-muted">To see the detailed bill of quantities and items:</p>
                 <a href="{{ route('admin.tender-item.index', ['tender_id' => $tender->id]) }}" class="btn btn-primary btn-lg">
                     <i class="fas fa-external-link-alt"></i> View All Tender Items
                 </a>
-            </div>
+            </div>--}}
         </div>
     </div>
 

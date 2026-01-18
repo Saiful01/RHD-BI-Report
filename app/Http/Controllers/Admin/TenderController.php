@@ -73,13 +73,11 @@ class TenderController extends Controller
 
 
         $ministries = Tender::distinct()->pluck('ministry_division')->filter()->toArray();
-        $methods = Tender::distinct()->pluck('procurement_method')->filter()->toArray();
         $districts = Tender::distinct()->pluck('procuring_entity_district')->filter()->toArray();
-
-        $tenderIds = Tender::distinct()->pluck('tenderid')->filter()->toArray();
+        $methods = Tender::distinct()->pluck('procurement_method')->filter()->toArray();
         $suppliers = Tender::distinct()->pluck('supplier_name')->filter()->toArray();
 
-        return view('admin.tenders.index', compact('ministries', 'methods', 'districts', 'tenderIds', 'suppliers'));
+        return view('admin.tenders.index', compact('ministries', 'methods', 'districts', 'suppliers'));
     }
 
 

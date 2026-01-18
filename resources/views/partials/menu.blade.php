@@ -117,7 +117,7 @@
 
                     @can('item_summary_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.tender-item-summary.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/tenders/item-summary*") ? "c-active" : "" }}">
+                            <a href="{{ route("admin.tender-item.summeryReport") }}" class="c-sidebar-nav-link {{ request()->is("admin/tenders/item-summary*") ? "c-active" : "" }}">
                                 <i class="fa-fw fas fa-chart-pie c-sidebar-nav-icon"></i>
                                 Item Summary
                             </a>

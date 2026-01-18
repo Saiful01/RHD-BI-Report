@@ -43,15 +43,19 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     Route::resource('tender', TenderController::class);
 
-    Route::get('admin/tender/{tender}/items', [TenderController::class, 'viewItems'])->name('tender.viewItems');
+    Route::get('/tender/{tender}/items', [TenderController::class, 'viewItems'])->name('tender.viewItems');
 
     Route::get('tender-select-search', [TenderController::class, 'selectSearch'])->name('tender.selectSearch');
 
+    Route::get('tender-item-select-search', [TenderItemController::class, 'tenderSearch'])->name('tender.item.selectSearch');
+    Route::get('supplier-search', [TenderItemController::class, 'supplierSearch'])->name('supplier-search');
+    Route::get('item-code-search', [TenderItemController::class, 'itemCodeSearch'])->name('item-code-search');
+    Route::get('item-name-search', [TenderItemController::class, 'itemNameSearch'])->name('item-name-search');
 
     Route::resource('tender-item', TenderItemController::class);
 
 
-    Route::get('tender-item-summary', [TenderItemController::class, 'index'])->name('tender-item-summary.index');
+    Route::get('tender-item-summary', [TenderItemController::class, 'summeryReport'])->name('tender-item.summeryReport');
 
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
