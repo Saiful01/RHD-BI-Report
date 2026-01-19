@@ -42,6 +42,8 @@
     gap: var(--fluent-space-sm);
 }
 
+.fluent-card-actions { display: flex; align-items: center; gap: var(--fluent-space-sm); }
+
 /* ==================== BUTTON COMPONENTS ==================== */
 .fluent-btn {
     display: inline-flex;
@@ -123,6 +125,11 @@
 
 .fluent-btn-info:hover { background-color: #005A9E; border-color: #005A9E; color: white; }
 
+/* Light Button */
+.fluent-btn-light { background-color: var(--fluent-white, #fff); color: var(--fluent-primary); border-color: var(--fluent-white, #fff); font-weight: 600; }
+.fluent-btn-light:hover { background-color: rgba(255, 255, 255, 0.9); color: var(--fluent-primary-hover, #106EBE); }
+.fluent-btn-light:active { background-color: rgba(255, 255, 255, 0.8); }
+
 /* Ghost/Outline Buttons */
 .fluent-btn-ghost {
     background-color: transparent;
@@ -177,6 +184,7 @@
 
 .fluent-alert-success { background-color: var(--fluent-success-light); border-left-color: var(--fluent-success); color: #0B5C0B; }
 .fluent-alert-danger { background-color: var(--fluent-error-light); border-left-color: var(--fluent-error); color: #9B2020; }
+.fluent-alert-error { background-color: var(--fluent-error-light); border-left-color: var(--fluent-error); color: #a4262c; }
 .fluent-alert-warning { background-color: var(--fluent-warning-light); border-left-color: var(--fluent-warning); color: #8a6914; }
 .fluent-alert-info { background-color: var(--fluent-info-light); border-left-color: var(--fluent-info); color: #004578; }
 

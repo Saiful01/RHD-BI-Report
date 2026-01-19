@@ -11,6 +11,10 @@
 .text-danger { color: var(--fluent-error); }
 .text-warning { color: #CA5010; }
 
+/* ==================== FONT UTILITIES ==================== */
+.font-mono { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; }
+.font-semibold { font-weight: 600; }
+
 /* ==================== DISPLAY UTILITIES ==================== */
 .d-flex { display: flex; }
 .d-block { display: block; }
