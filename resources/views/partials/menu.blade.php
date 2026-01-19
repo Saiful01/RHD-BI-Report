@@ -91,6 +91,23 @@
         <div class="fluent-nav-section">
             <div class="fluent-nav-section-title">Reports</div>
 
+            @can('daily_weather_access')
+                <div class="fluent-nav-item">
+                    <a href="{{ route('admin.daily-weathers.index') }}?view=pavementAnalysis" class="fluent-nav-link {{ request()->is('admin/daily-weathers*') && request()->get('view') == 'pavementAnalysis' ? 'active' : '' }}">
+                        <span class="fluent-nav-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <path d="M4 19h16" stroke="#107C10" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M4 15h16" stroke="#107C10" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+                                <path d="M6 11h12" stroke="#107C10" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+                                <path d="M12 3v5M9 5l3-2 3 2" stroke="#FFB900" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                        <span class="fluent-nav-text">Pavement Analysis</span>
+                        <span class="fluent-nav-tooltip">Pavement Temperature Analysis</span>
+                    </a>
+                </div>
+            @endcan
+
             @can('tender_data_access')
                 @can('item_summary_access')
                     <div class="fluent-nav-item">

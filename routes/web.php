@@ -42,6 +42,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('daily-weathers/records-data', 'DailyWeatherController@recordsData')->name('daily-weathers.recordsData');
     Route::get('daily-weathers/weekly-trend', 'DailyWeatherController@weeklyTrend')->name('daily-weathers.weeklyTrend');
     Route::get('daily-weathers/weather-report-data', 'DailyWeatherController@weatherReportData')->name('daily-weathers.weatherReportData');
+    Route::get('daily-weathers/pavement-analysis-data', 'DailyWeatherController@pavementAnalysisData')->name('daily-weathers.pavementAnalysisData');
     Route::resource('daily-weathers', 'DailyWeatherController');
 
     // Weather Report

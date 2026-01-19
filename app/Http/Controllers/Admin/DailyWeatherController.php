@@ -705,4 +705,216 @@ class DailyWeatherController extends Controller
         $pvt = ($airTemp - 0.00618 * pow($latitude, 2) + 0.2289 * $latitude + 42.2) * 0.9545 - 17.78;
         return round($pvt, 2);
     }
+
+    /**
+     * Pavement Temperature Analysis using SUPERPAVE methodology
+     * Based on SHRP-A-648A formulas
+     */
+    public function pavementAnalysisData(Request $request)
+    {
+        abort_if(Gate::denies('daily_weather_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        // Get parameters
+        $stationIds = $request->get('stations', []);
+        if (is_string($stationIds)) {
+            $stationIds = array_filter(explode(',', $stationIds));
+        }
+
+        $fromDate = $request->get('from_date');
+        $toDate = $request->get('to_date');
+        $hotDays = (int) $request->get('hot_days', 7); // Number of hottest days to consider
+        $coldDays = (int) $request->get('cold_days', 1); // Number of coldest days to consider
+        $sdType = $request->get('sd_type', 'population'); // 'population' or 'sample'
+
+        // If no stations selected, use all stations
+        if (empty($stationIds)) {
+            $stationIds = Station::pluck('id')->toArray();
+        }
+
+        // If no date range provided, use full available range
+        if (empty($fromDate) || empty($toDate)) {
+            $dateRange = DB::table('daily_weathers')
+                ->whereNull('deleted_at')
+                ->selectRaw('MIN(record_date) as min_date, MAX(record_date) as max_date')
+                ->first();
+
+            $fromDate = $fromDate ?: ($dateRange->min_date ?? date('Y-01-01'));
+            $toDate = $toDate ?: ($dateRange->max_date ?? date('Y-12-31'));
+        }
+
+        $results = [];
+
+        foreach ($stationIds as $stationId) {
+            $station = Station::find($stationId);
+            if (!$station) continue;
+
+            // Get weather data for this station in date range
+            $weatherData = DB::table('daily_weathers')
+                ->where('station_id', $stationId)
+                ->whereBetween('record_date', [$fromDate, $toDate])
+                ->whereNull('deleted_at')
+                ->get();
+
+            if ($weatherData->isEmpty()) continue;
+
+            // SUPERPAVE Methodology:
+            // For each YEAR, get the coldest N days and hottest N-day average
+            // Then calculate AVG and STD from those yearly values
+
+            $years = $weatherData->groupBy(function($item) {
+                return Carbon::parse($item->record_date)->year;
+            });
+
+            $yearlyHighAvgs = []; // Average of hottest N days per year
+            $yearlyLowAvgs = [];  // Average of coldest N days per year
+
+            foreach ($years as $year => $yearData) {
+                // Get top N highest max temps for this year
+                $yearHighTemps = collect($yearData)->whereNotNull('max_temp')
+                    ->sortByDesc('max_temp')
+                    ->take($hotDays)
+                    ->pluck('max_temp')
+                    ->values();
+
+                if ($yearHighTemps->count() >= $hotDays) {
+                    $yearlyHighAvgs[] = $yearHighTemps->avg();
+                }
+
+                // Get top N lowest min temps for this year
+                $yearLowTemps = collect($yearData)->whereNotNull('mini_temp')
+                    ->sortBy('mini_temp')
+                    ->take($coldDays)
+                    ->pluck('mini_temp')
+                    ->values();
+
+                if ($yearLowTemps->count() >= $coldDays) {
+                    $yearlyLowAvgs[] = $yearLowTemps->avg();
+                }
+            }
+
+            if (empty($yearlyHighAvgs) || empty($yearlyLowAvgs)) continue;
+
+            // Calculate AVG HIGH and AVG LOW from yearly values
+            $avgHigh = round(array_sum($yearlyHighAvgs) / count($yearlyHighAvgs), 2);
+            $avgLow = round(array_sum($yearlyLowAvgs) / count($yearlyLowAvgs), 2);
+
+            // Calculate Standard Deviations from yearly values
+            $stdHigh = $this->calculateStdDev($yearlyHighAvgs, $sdType);
+            $stdLow = $this->calculateStdDev($yearlyLowAvgs, $sdType);
+
+            // Get station coordinates
+            $lat = $station->lat ?? 23.8; // Default to Bangladesh latitude if null
+            $lon = $station->lon ?? 90.4;
+            $elev = $station->elevation ?? 0;
+
+            // 50% Reliability calculations
+            $maxAir50 = $avgHigh;
+            $minAir50 = $avgLow;
+            $maxPvt50 = $this->calculateSuperpavePVT($maxAir50, $lat);
+            $minPvt50 = $minAir50; // MIN PVT equals MIN AIR
+
+            // If MAX PVT is less than 0, use MIN AIR instead
+            if ($maxPvt50 < 0) {
+                $maxPvt50 = $minAir50;
+            }
+
+            // 98% Reliability calculations (using 2.055 standard deviations)
+            $maxAir98 = round($avgHigh + (2.055 * $stdHigh), 2);
+            $minAir98 = round($avgLow - (2.055 * $stdLow), 2);
+            $maxPvt98 = $this->calculateSuperpavePVT($maxAir98, $lat);
+            $minPvt98 = $minAir98; // MIN PVT equals MIN AIR
+
+            // If MAX PVT is less than 0, use MIN AIR instead
+            if ($maxPvt98 < 0) {
+                $maxPvt98 = $minAir98;
+            }
+
+            // Prepare yearly data for graphing
+            $yearlyData = [];
+            foreach ($years as $year => $yearData) {
+                $yearHighTemps = collect($yearData)->whereNotNull('max_temp')
+                    ->sortByDesc('max_temp')
+                    ->take($hotDays)
+                    ->pluck('max_temp')
+                    ->values();
+
+                $yearLowTemps = collect($yearData)->whereNotNull('mini_temp')
+                    ->sortBy('mini_temp')
+                    ->take($coldDays)
+                    ->pluck('mini_temp')
+                    ->values();
+
+                if ($yearHighTemps->count() >= $hotDays && $yearLowTemps->count() >= $coldDays) {
+                    $yearlyData[] = [
+                        'year' => $year,
+                        'high_avg' => round($yearHighTemps->avg(), 2),
+                        'low_avg' => round($yearLowTemps->avg(), 2),
+                    ];
+                }
+            }
+
+            // Sort yearly data by year
+            usort($yearlyData, function($a, $b) {
+                return $a['year'] - $b['year'];
+            });
+
+            $results[] = [
+                'station_id' => $stationId,
+                'station_name' => $station->station_name,
+                'lon' => round($lon, 2),
+                'lat' => round($lat, 2),
+                'elev' => round($elev, 0),
+                'avg_low' => round($avgLow, 1),
+                'std_low' => round($stdLow, 1),
+                'avg_high' => round($avgHigh, 1),
+                'std_high' => round($stdHigh, 1),
+                // 50% Reliability
+                'max_air_50' => round($maxAir50, 0),
+                'max_pvt_50' => round($maxPvt50, 0),
+                'min_air_50' => round($minAir50, 0),
+                'min_pvt_50' => round($minPvt50, 0),
+                // 98% Reliability
+                'max_air_98' => round($maxAir98, 0),
+                'max_pvt_98' => round($maxPvt98, 0),
+                'min_air_98' => round($minAir98, 0),
+                'min_pvt_98' => round($minPvt98, 0),
+                // Yearly data for graphing
+                'yearly_data' => $yearlyData,
+            ];
+        }
+
+        // Calculate summary statistics
+        $summary = [
+            'station_count' => count($results),
+            'from_date' => $fromDate,
+            'to_date' => $toDate,
+            'hot_days' => $hotDays,
+            'cold_days' => $coldDays,
+            'sd_type' => $sdType,
+        ];
+
+        if (!empty($results)) {
+            $summary['overall_max_air'] = max(array_column($results, 'max_air_98'));
+            $summary['overall_min_air'] = min(array_column($results, 'min_air_98'));
+            $summary['overall_max_pvt'] = max(array_column($results, 'max_pvt_98'));
+            $summary['overall_min_pvt'] = min(array_column($results, 'min_pvt_98'));
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $results,
+            'summary' => $summary,
+        ]);
+    }
+
+    /**
+     * Calculate Pavement Temperature at 20mm depth using SUPERPAVE formula
+     * Formula: T_20mm = (T_air - 0.00618 × lat² + 0.2289 × lat + 42.2) × 0.9545 - 17.78
+     * Source: SHRP-A-648A
+     */
+    private function calculateSuperpavePVT(float $airTemp, float $latitude): float
+    {
+        $pvt = ($airTemp - 0.00618 * pow($latitude, 2) + 0.2289 * $latitude + 42.2) * 0.9545 - 17.78;
+        return round($pvt, 2);
+    }
 }
