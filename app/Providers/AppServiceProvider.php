@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,7 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (config('app.env') === 'production') {
+        // Dynamically set URL scheme based on the incoming request
+        if (request()->isSecure() ||
+            request()->header('X-Forwarded-Proto') === 'https' ||
+            request()->header('X-Forwarded-Ssl') === 'on') {
             URL::forceScheme('https');
         }
     }
