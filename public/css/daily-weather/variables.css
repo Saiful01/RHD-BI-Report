@@ -1,0 +1,162 @@
+/* ==================== DAILY WEATHER - CSS VARIABLES & MIXINS ==================== */
+
+:root {
+    /* Temperature Colors */
+    --dw-temp-high: #D83B01;
+    --dw-temp-high-light: #FF8C00;
+    --dw-temp-low: #0078D4;
+    --dw-temp-low-light: #00BCF2;
+    --dw-temp-low-lighter: #50B4FF;
+
+    /* Gradient Presets */
+    --dw-gradient-primary: linear-gradient(135deg, var(--fluent-primary) 0%, #00BCF2 100%);
+    --dw-gradient-high: linear-gradient(135deg, #D83B01 0%, #FF8C00 100%);
+    --dw-gradient-low: linear-gradient(135deg, #0078D4 0%, #00BCF2 100%);
+    --dw-gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --dw-gradient-green: linear-gradient(135deg, #107C10 0%, #00B294 100%);
+    --dw-gradient-dark: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+
+    /* Status Colors */
+    --dw-hot: linear-gradient(135deg, #FF6B6B 0%, #EE5A24 100%);
+    --dw-cold: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+    --dw-rain: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+    --dw-humidity: linear-gradient(135deg, #81ecec 0%, #00cec9 100%);
+    --dw-sun: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+
+    /* Spacing */
+    --dw-spacing-xs: 4px;
+    --dw-spacing-sm: 8px;
+    --dw-spacing-md: 12px;
+    --dw-spacing-lg: 16px;
+    --dw-spacing-xl: 20px;
+    --dw-spacing-xxl: 24px;
+
+    /* Card Styles */
+    --dw-card-padding: 20px;
+    --dw-card-radius: var(--fluent-radius-lg);
+    --dw-card-shadow: var(--fluent-shadow-4);
+    --dw-card-border: 1px solid var(--fluent-gray-20);
+
+    /* Transitions */
+    --dw-transition-fast: all 0.15s ease;
+    --dw-transition-normal: all 0.2s ease;
+    --dw-transition-slow: all 0.3s ease;
+}
+
+/* ==================== REUSABLE COMPONENT CLASSES ==================== */
+
+/* Card Base */
+.dw-card {
+    background: var(--fluent-bg-primary);
+    border-radius: var(--dw-card-radius);
+    box-shadow: var(--dw-card-shadow);
+    border: var(--dw-card-border);
+    overflow: hidden;
+}
+
+.dw-card-hover {
+    transition: var(--dw-transition-normal);
+    cursor: pointer;
+}
+
+.dw-card-hover:hover {
+    box-shadow: var(--fluent-shadow-16);
+    transform: translateY(-2px);
+}
+
+/* Icon Base */
+.dw-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--fluent-radius-md);
+    color: white;
+    flex-shrink: 0;
+}
+
+.dw-icon-sm { width: 32px; height: 32px; font-size: 16px; }
+.dw-icon-md { width: 40px; height: 40px; font-size: 18px; }
+.dw-icon-lg { width: 48px; height: 48px; font-size: 22px; }
+.dw-icon-xl { width: 56px; height: 56px; font-size: 26px; }
+
+/* Section Header */
+.dw-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--dw-spacing-lg) var(--dw-spacing-xl);
+    background: var(--fluent-gray-10);
+    border-bottom: 1px solid var(--fluent-gray-20);
+}
+
+.dw-section-header h3,
+.dw-section-header h4 {
+    display: flex;
+    align-items: center;
+    gap: var(--dw-spacing-sm);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--fluent-text-primary);
+    margin: 0;
+}
+
+.dw-section-header h3 i,
+.dw-section-header h4 i {
+    color: var(--fluent-primary);
+}
+
+/* Flex Utilities */
+.dw-flex { display: flex; }
+.dw-flex-center { display: flex; align-items: center; justify-content: center; }
+.dw-flex-between { display: flex; align-items: center; justify-content: space-between; }
+.dw-flex-col { display: flex; flex-direction: column; }
+.dw-flex-wrap { flex-wrap: wrap; }
+.dw-gap-xs { gap: var(--dw-spacing-xs); }
+.dw-gap-sm { gap: var(--dw-spacing-sm); }
+.dw-gap-md { gap: var(--dw-spacing-md); }
+.dw-gap-lg { gap: var(--dw-spacing-lg); }
+
+/* Grid Utilities */
+.dw-grid { display: grid; gap: var(--dw-spacing-lg); }
+.dw-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.dw-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.dw-grid-4 { grid-template-columns: repeat(4, 1fr); }
+.dw-grid-auto { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+/* Button Base */
+.dw-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--dw-spacing-sm);
+    padding: var(--dw-spacing-sm) var(--dw-spacing-lg);
+    border: none;
+    border-radius: var(--fluent-radius-md);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--dw-transition-normal);
+}
+
+.dw-btn-primary {
+    background: var(--fluent-primary);
+    color: white;
+}
+
+.dw-btn-primary:hover {
+    background: #106EBE;
+    box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+}
+
+/* Text Utilities */
+.dw-text-high { color: var(--dw-temp-high) !important; }
+.dw-text-low { color: var(--dw-temp-low) !important; }
+.dw-text-muted { color: var(--fluent-text-secondary); }
+.dw-text-xs { font-size: 10px; }
+.dw-text-sm { font-size: 12px; }
+.dw-text-md { font-size: 14px; }
+.dw-text-lg { font-size: 16px; }
+.dw-text-xl { font-size: 20px; }
+.dw-text-xxl { font-size: 24px; }
+.dw-text-bold { font-weight: 600; }
+.dw-text-bolder { font-weight: 700; }

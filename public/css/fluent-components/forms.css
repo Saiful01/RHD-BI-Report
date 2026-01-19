@@ -1,0 +1,196 @@
+/* ==================== FLUENT UI - FORM COMPONENTS ==================== */
+
+/* Form Group */
+.fluent-form-group { margin-bottom: var(--fluent-space-md); }
+
+/* Labels */
+.fluent-label {
+    display: block;
+    font-size: var(--fluent-font-size-md);
+    font-weight: var(--fluent-font-weight-semibold);
+    color: var(--fluent-text-primary);
+    margin-bottom: var(--fluent-space-xs);
+}
+
+.fluent-label-required::after { content: ' *'; color: var(--fluent-error); }
+
+/* Input, Select, Textarea */
+.fluent-input,
+.fluent-select,
+.fluent-textarea {
+    width: 100%;
+    padding: var(--fluent-space-xs) var(--fluent-space-sm);
+    font-family: var(--fluent-font-family);
+    font-size: var(--fluent-font-size-md);
+    color: var(--fluent-text-primary);
+    background-color: var(--fluent-bg-primary);
+    border: 1px solid var(--fluent-gray-60);
+    border-radius: var(--fluent-radius-md);
+    transition: border-color var(--fluent-transition-fast), box-shadow var(--fluent-transition-fast);
+    min-height: 32px;
+}
+
+.fluent-input:hover,
+.fluent-select:hover,
+.fluent-textarea:hover { border-color: var(--fluent-gray-90); }
+
+.fluent-input:focus,
+.fluent-select:focus,
+.fluent-textarea:focus { outline: none; border-color: var(--fluent-primary); box-shadow: 0 0 0 1px var(--fluent-primary); }
+
+.fluent-input::placeholder { color: var(--fluent-text-disabled); }
+
+.fluent-input:disabled,
+.fluent-select:disabled,
+.fluent-textarea:disabled { background-color: var(--fluent-gray-20); color: var(--fluent-text-disabled); cursor: not-allowed; }
+
+.fluent-textarea { min-height: 100px; resize: vertical; }
+
+/* Input with Icon */
+.fluent-input-group { position: relative; }
+
+.fluent-input-icon {
+    position: absolute;
+    left: var(--fluent-space-sm);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--fluent-text-secondary);
+    pointer-events: none;
+}
+
+.fluent-input-group .fluent-input { padding-left: calc(var(--fluent-space-sm) + 24px); }
+
+/* Validation States */
+.fluent-input.is-invalid,
+.fluent-select.is-invalid,
+.fluent-textarea.is-invalid { border-color: var(--fluent-error); }
+
+.fluent-input.is-invalid:focus,
+.fluent-select.is-invalid:focus,
+.fluent-textarea.is-invalid:focus { box-shadow: 0 0 0 1px var(--fluent-error); }
+
+.fluent-invalid-feedback { color: var(--fluent-error); font-size: var(--fluent-font-size-sm); margin-top: var(--fluent-space-xxs); }
+
+.fluent-input.is-valid,
+.fluent-select.is-valid,
+.fluent-textarea.is-valid { border-color: var(--fluent-success); }
+
+/* ==================== CHECKBOX ==================== */
+.fluent-checkbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--fluent-border);
+    border-radius: var(--fluent-radius-sm);
+    background: var(--fluent-surface);
+    cursor: pointer;
+    transition: all var(--fluent-transition-fast);
+    position: relative;
+}
+
+.fluent-checkbox:hover { border-color: var(--fluent-primary); }
+.fluent-checkbox:checked { border-color: var(--fluent-primary); background: var(--fluent-primary); }
+
+.fluent-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.fluent-checkbox:focus { outline: none; box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.3); }
+
+/* Checkbox Label Wrapper */
+.fluent-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: var(--fluent-space-xs);
+    cursor: pointer;
+    user-select: none;
+}
+
+.fluent-checkbox-label input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--fluent-primary); cursor: pointer; }
+
+/* ==================== RADIO BUTTONS ==================== */
+.fluent-radio-label {
+    display: flex;
+    align-items: center;
+    gap: var(--fluent-space-sm);
+    cursor: pointer;
+    padding: var(--fluent-space-xs) 0;
+}
+
+.fluent-radio {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--fluent-border);
+    border-radius: 50%;
+    background: var(--fluent-surface);
+    cursor: pointer;
+    transition: all var(--fluent-transition-fast);
+    position: relative;
+}
+
+.fluent-radio:hover { border-color: var(--fluent-primary); }
+.fluent-radio:checked { border-color: var(--fluent-primary); background: var(--fluent-surface); }
+
+.fluent-radio:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--fluent-primary);
+}
+
+.fluent-radio:focus { outline: none; box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.3); }
+.fluent-radio-text { color: var(--fluent-text-primary); font-size: 14px; }
+
+/* ==================== SELECT2 OVERRIDE ==================== */
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple {
+    border: 1px solid var(--fluent-gray-60) !important;
+    border-radius: var(--fluent-radius-md) !important;
+    min-height: 32px !important;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--single,
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border-color: var(--fluent-primary) !important;
+    box-shadow: 0 0 0 1px var(--fluent-primary) !important;
+}
+
+.select2-dropdown {
+    border-color: var(--fluent-gray-60) !important;
+    border-radius: var(--fluent-radius-md) !important;
+    box-shadow: var(--fluent-shadow-8) !important;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: var(--fluent-primary) !important;
+}
+
+/* ==================== FORM ROW/COL LAYOUT ==================== */
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.form-col {
+    flex: 1;
+    min-width: 200px;
+}
+
+@media (max-width: 768px) {
+    .form-col { flex: 100%; }
+}

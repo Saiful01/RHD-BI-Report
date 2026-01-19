@@ -1,0 +1,141 @@
+/* ==================== FLUENT UI - UTILITIES & RESPONSIVE ==================== */
+
+/* ==================== TEXT UTILITIES ==================== */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+
+.text-muted { color: var(--fluent-text-tertiary); }
+.text-primary { color: var(--fluent-primary); }
+.text-success { color: var(--fluent-success); }
+.text-danger { color: var(--fluent-error); }
+.text-warning { color: #CA5010; }
+
+/* ==================== DISPLAY UTILITIES ==================== */
+.d-flex { display: flex; }
+.d-block { display: block; }
+.d-none { display: none; }
+.d-inline { display: inline; }
+
+.flex-wrap { flex-wrap: wrap; }
+.align-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+
+/* ==================== GAP UTILITIES ==================== */
+.gap-1 { gap: 4px; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.gap-4 { gap: 16px; }
+
+/* ==================== MARGIN UTILITIES ==================== */
+.mb-0 { margin-bottom: 0 !important; }
+.mb-1 { margin-bottom: 4px; }
+.mb-2 { margin-bottom: 8px; }
+.mb-3 { margin-bottom: 12px; }
+.mb-4 { margin-bottom: 16px; }
+
+.mt-2 { margin-top: 8px; }
+.mt-3 { margin-top: 12px; }
+.mt-4 { margin-top: 16px; }
+
+.mr-1 { margin-right: 4px; }
+.mr-2 { margin-right: 8px; }
+
+/* ==================== PADDING UTILITIES ==================== */
+.p-0 { padding: 0 !important; }
+.py-4 { padding-top: 16px; padding-bottom: 16px; }
+
+/* ==================== WIDTH UTILITIES ==================== */
+.w-100 { width: 100%; }
+
+/* ==================== RESPONSIVE BREAKPOINTS ==================== */
+
+/* Medium screens (tablets) */
+@media (max-width: 992px) {
+    .fluent-sidebar {
+        transform: translateX(-100%);
+        width: var(--fluent-sidebar-width);
+        z-index: 1100;
+    }
+
+    .fluent-sidebar.open { transform: translateX(0); }
+
+    /* Ensure sidebar shows all text when open on mobile */
+    .fluent-sidebar.open .fluent-nav-text,
+    .fluent-sidebar.open .fluent-sidebar-brand-text,
+    .fluent-sidebar.open .fluent-nav-section-title {
+        opacity: 1;
+        width: auto;
+        height: auto;
+        padding: var(--fluent-space-md) var(--fluent-space-lg) 6px;
+    }
+
+    .fluent-main {
+        margin-left: 0 !important;
+        max-width: 100vw;
+        width: 100%;
+    }
+
+    .fluent-header {
+        padding: 0 12px;
+        left: 0 !important;
+    }
+
+    .fluent-header-title { font-size: 14px; }
+    .fluent-header-toggle { display: flex; }
+
+    .fluent-sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1050;
+    }
+
+    .fluent-sidebar.open ~ .fluent-sidebar-overlay { display: block; }
+
+    /* Reset sidebar width variable for mobile */
+    :root { --fluent-sidebar-collapsed-width: 0px; }
+
+    /* Responsive visibility */
+    .d-md-none { display: inline !important; }
+    .d-lg-inline { display: none !important; }
+}
+
+/* Small screens (phones) */
+@media (max-width: 768px) {
+    .fluent-content { padding: var(--fluent-space-md); }
+
+    .fluent-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: var(--fluent-space-sm) var(--fluent-space-md);
+        margin-left: calc(-1 * var(--fluent-space-md));
+        margin-right: calc(-1 * var(--fluent-space-md));
+        margin-top: calc(-1 * var(--fluent-space-md));
+    }
+
+    .fluent-page-actions { width: 100%; justify-content: flex-start; }
+    .fluent-stats-grid { grid-template-columns: 1fr; }
+    .fluent-card-body { padding: var(--fluent-space-md); }
+}
+
+/* Extra small screens */
+@media (max-width: 576px) {
+    .fluent-header { padding: 0 8px; }
+    .fluent-header-toggle { width: 36px; height: 36px; }
+
+    .fluent-header-title {
+        font-size: 13px;
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .fluent-user-button { padding: 4px 6px; }
+    .fluent-user-avatar { width: 28px; height: 28px; font-size: 11px; }
+    .fluent-content { padding: 12px; }
+    .fluent-footer { padding: 10px 12px; font-size: 11px; }
+}

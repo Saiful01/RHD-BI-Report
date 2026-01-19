@@ -1,0 +1,305 @@
+/* ==================== FLUENT UI - UI COMPONENTS ==================== */
+
+/* ==================== CARD COMPONENT ==================== */
+.fluent-card {
+    background-color: var(--fluent-bg-primary);
+    border-radius: var(--fluent-radius-lg);
+    box-shadow: var(--fluent-shadow-4);
+    overflow: hidden;
+    transition: box-shadow var(--fluent-transition-normal);
+}
+
+.fluent-card:hover { box-shadow: var(--fluent-shadow-8); }
+
+.fluent-card-header {
+    padding: var(--fluent-space-md) var(--fluent-space-lg);
+    border-bottom: 1px solid var(--fluent-gray-30);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--fluent-gray-20);
+}
+
+.fluent-card-title {
+    font-size: var(--fluent-font-size-lg);
+    font-weight: var(--fluent-font-weight-semibold);
+    color: var(--fluent-text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--fluent-space-xs);
+}
+
+.fluent-card-title-icon { color: var(--fluent-primary); }
+.fluent-card-body { padding: var(--fluent-space-lg); }
+
+.fluent-card-footer {
+    padding: var(--fluent-space-md) var(--fluent-space-lg);
+    border-top: 1px solid var(--fluent-gray-30);
+    background-color: var(--fluent-bg-tertiary);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--fluent-space-sm);
+}
+
+/* ==================== BUTTON COMPONENTS ==================== */
+.fluent-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--fluent-space-xs);
+    padding: var(--fluent-space-xs) var(--fluent-space-md);
+    font-family: var(--fluent-font-family);
+    font-size: var(--fluent-font-size-md);
+    font-weight: var(--fluent-font-weight-semibold);
+    line-height: 1.5;
+    border: 1px solid transparent;
+    border-radius: var(--fluent-radius-md);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--fluent-transition-fast);
+    white-space: nowrap;
+    min-height: 32px;
+}
+
+.fluent-btn:focus { outline: none; box-shadow: 0 0 0 2px var(--fluent-bg-primary), 0 0 0 4px var(--fluent-primary); }
+.fluent-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Button Sizes */
+.fluent-btn-sm { padding: var(--fluent-space-xxs) var(--fluent-space-sm); font-size: var(--fluent-font-size-sm); min-height: 24px; }
+.fluent-btn-lg { padding: var(--fluent-space-sm) var(--fluent-space-lg); font-size: var(--fluent-font-size-lg); min-height: 40px; }
+
+/* Primary Button */
+.fluent-btn-primary {
+    background-color: var(--fluent-primary);
+    border-color: var(--fluent-primary);
+    color: white;
+}
+
+.fluent-btn-primary:hover { background-color: var(--fluent-primary-dark); border-color: var(--fluent-primary-dark); color: white; }
+
+/* Secondary Button */
+.fluent-btn-secondary {
+    background-color: var(--fluent-gray-30);
+    border-color: var(--fluent-gray-40);
+    color: var(--fluent-text-primary);
+}
+
+.fluent-btn-secondary:hover { background-color: var(--fluent-gray-40); color: var(--fluent-text-primary); }
+
+/* Success Button */
+.fluent-btn-success {
+    background-color: var(--fluent-success);
+    border-color: var(--fluent-success);
+    color: white;
+}
+
+.fluent-btn-success:hover { background-color: #0B7A0B; border-color: #0B7A0B; color: white; }
+
+/* Danger Button */
+.fluent-btn-danger {
+    background-color: var(--fluent-error);
+    border-color: var(--fluent-error);
+    color: white;
+}
+
+.fluent-btn-danger:hover { background-color: #B52B2B; border-color: #B52B2B; color: white; }
+
+/* Warning Button */
+.fluent-btn-warning {
+    background-color: var(--fluent-warning);
+    border-color: var(--fluent-warning);
+    color: #1a1a2e;
+}
+
+.fluent-btn-warning:hover { background-color: #E69900; border-color: #E69900; color: #1a1a2e; }
+
+/* Info Button */
+.fluent-btn-info {
+    background-color: var(--fluent-info);
+    border-color: var(--fluent-info);
+    color: white;
+}
+
+.fluent-btn-info:hover { background-color: #005A9E; border-color: #005A9E; color: white; }
+
+/* Ghost/Outline Buttons */
+.fluent-btn-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--fluent-text-primary);
+}
+
+.fluent-btn-ghost:hover { background-color: var(--fluent-gray-20); }
+.fluent-btn-ghost-primary { background: transparent; border-color: transparent; color: var(--fluent-primary); }
+.fluent-btn-ghost-primary:hover { background: var(--fluent-primary-light); }
+
+.fluent-btn-outline-primary { background: transparent; border-color: var(--fluent-primary); color: var(--fluent-primary); }
+.fluent-btn-outline-primary:hover { background: var(--fluent-primary); color: white; }
+
+.fluent-btn-outline-secondary { background: transparent; border-color: var(--fluent-gray-60); color: var(--fluent-text-primary); }
+.fluent-btn-outline-secondary:hover { background: var(--fluent-gray-20); }
+
+.fluent-btn-outline-danger { background: transparent; border-color: var(--fluent-error); color: var(--fluent-error); }
+.fluent-btn-outline-danger:hover { background: var(--fluent-error); color: white; }
+
+/* Icon Button */
+.fluent-btn-icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    justify-content: center;
+    min-height: auto;
+}
+
+.fluent-btn-icon.fluent-btn-sm { width: 24px; height: 24px; }
+.fluent-btn-icon.fluent-btn-lg { width: 40px; height: 40px; }
+
+/* Button Group */
+.fluent-btn-group { display: inline-flex; }
+.fluent-btn-group .fluent-btn { border-radius: 0; }
+.fluent-btn-group .fluent-btn:first-child { border-radius: var(--fluent-radius-md) 0 0 var(--fluent-radius-md); }
+.fluent-btn-group .fluent-btn:last-child { border-radius: 0 var(--fluent-radius-md) var(--fluent-radius-md) 0; }
+
+/* ==================== ALERT COMPONENTS ==================== */
+.fluent-alert {
+    padding: var(--fluent-space-md);
+    border-radius: var(--fluent-radius-md);
+    border-left: 4px solid;
+    display: flex;
+    gap: var(--fluent-space-sm);
+    align-items: flex-start;
+}
+
+.fluent-alert-icon { flex-shrink: 0; margin-top: 2px; }
+.fluent-alert-content { flex: 1; }
+.fluent-alert-title { font-weight: var(--fluent-font-weight-semibold); margin-bottom: var(--fluent-space-xxs); }
+
+.fluent-alert-success { background-color: var(--fluent-success-light); border-left-color: var(--fluent-success); color: #0B5C0B; }
+.fluent-alert-danger { background-color: var(--fluent-error-light); border-left-color: var(--fluent-error); color: #9B2020; }
+.fluent-alert-warning { background-color: var(--fluent-warning-light); border-left-color: var(--fluent-warning); color: #8a6914; }
+.fluent-alert-info { background-color: var(--fluent-info-light); border-left-color: var(--fluent-info); color: #004578; }
+
+/* ==================== BADGE COMPONENT ==================== */
+.fluent-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    font-size: var(--fluent-font-size-sm);
+    font-weight: var(--fluent-font-weight-semibold);
+    border-radius: var(--fluent-radius-sm);
+}
+
+.fluent-badge-primary { background-color: var(--fluent-primary-light); color: var(--fluent-primary); }
+.fluent-badge-success { background-color: var(--fluent-success-light); color: var(--fluent-success); }
+.fluent-badge-warning { background-color: var(--fluent-warning-light); color: #8a6914; }
+.fluent-badge-danger { background-color: var(--fluent-error-light); color: var(--fluent-error); }
+.fluent-badge-secondary { background-color: var(--fluent-gray-20); color: var(--fluent-text-secondary); }
+.fluent-badge-info { background-color: var(--fluent-info-light); color: #0062A3; }
+
+/* ==================== DROPDOWN COMPONENT ==================== */
+.fluent-dropdown { position: relative; display: inline-block; }
+
+.fluent-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 180px;
+    background-color: var(--fluent-bg-primary);
+    border-radius: var(--fluent-radius-md);
+    box-shadow: var(--fluent-shadow-16);
+    border: 1px solid var(--fluent-gray-30);
+    z-index: var(--fluent-z-dropdown);
+    display: none;
+    padding: var(--fluent-space-xs) 0;
+}
+
+.fluent-dropdown.open .fluent-dropdown-menu { display: block; }
+
+.fluent-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: var(--fluent-space-sm);
+    padding: var(--fluent-space-xs) var(--fluent-space-md);
+    color: var(--fluent-text-primary);
+    text-decoration: none;
+    transition: background-color var(--fluent-transition-fast);
+}
+
+.fluent-dropdown-item:hover { background-color: var(--fluent-gray-10); text-decoration: none; color: var(--fluent-text-primary); }
+.fluent-dropdown-divider { height: 1px; background-color: var(--fluent-gray-30); margin: var(--fluent-space-xs) 0; }
+
+/* ==================== STATS/METRIC CARDS ==================== */
+.fluent-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--fluent-space-md);
+    margin-bottom: var(--fluent-space-lg);
+}
+
+.fluent-stat-card {
+    background-color: var(--fluent-bg-primary);
+    border-radius: var(--fluent-radius-lg);
+    padding: var(--fluent-space-lg);
+    box-shadow: var(--fluent-shadow-4);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--fluent-space-md);
+    transition: all var(--fluent-transition-normal);
+}
+
+.fluent-stat-card:hover { box-shadow: var(--fluent-shadow-8); transform: translateY(-2px); }
+
+.fluent-stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--fluent-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.fluent-stat-icon.primary { background-color: var(--fluent-primary-light); color: var(--fluent-primary); }
+.fluent-stat-icon.success { background-color: var(--fluent-success-light); color: var(--fluent-success); }
+.fluent-stat-icon.warning { background-color: var(--fluent-warning-light); color: #8a6914; }
+.fluent-stat-icon.danger { background-color: var(--fluent-error-light); color: var(--fluent-error); }
+
+.fluent-stat-content { flex: 1; }
+.fluent-stat-value { font-size: var(--fluent-font-size-xxl); font-weight: var(--fluent-font-weight-bold); color: var(--fluent-text-primary); line-height: 1.2; }
+.fluent-stat-label { font-size: var(--fluent-font-size-sm); color: var(--fluent-text-secondary); margin-top: var(--fluent-space-xxs); }
+
+/* ==================== EMPTY STATE ==================== */
+.fluent-empty-state { text-align: center; padding: var(--fluent-space-xxl); }
+.fluent-empty-icon { font-size: 64px; color: var(--fluent-gray-60); margin-bottom: var(--fluent-space-md); }
+.fluent-empty-title { font-size: var(--fluent-font-size-xl); font-weight: var(--fluent-font-weight-semibold); color: var(--fluent-text-primary); margin-bottom: var(--fluent-space-xs); }
+.fluent-empty-description { color: var(--fluent-text-secondary); margin-bottom: var(--fluent-space-lg); }
+
+/* ==================== NAV TABS ==================== */
+.fluent-nav-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--fluent-border);
+    padding: 0 var(--fluent-space-md);
+    margin: 0;
+    list-style: none;
+    background: var(--fluent-surface);
+}
+
+.fluent-nav-tabs .fluent-nav-item { margin: 0; }
+
+.fluent-nav-tabs .fluent-nav-link {
+    display: flex;
+    align-items: center;
+    gap: var(--fluent-space-xs);
+    padding: var(--fluent-space-md) var(--fluent-space-lg);
+    color: var(--fluent-text-secondary);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all var(--fluent-transition-fast);
+    font-weight: 500;
+}
+
+.fluent-nav-tabs .fluent-nav-link:hover { color: var(--fluent-primary); background: rgba(0, 120, 212, 0.05); }
+.fluent-nav-tabs .fluent-nav-link.active { color: var(--fluent-primary); border-bottom-color: var(--fluent-primary); }

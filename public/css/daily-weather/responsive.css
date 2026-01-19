@@ -1,0 +1,156 @@
+/* ==================== DAILY WEATHER - RESPONSIVE STYLES ==================== */
+
+@media (max-width: 992px) {
+    .comparison-charts { grid-template-columns: 1fr; }
+    .calendar-controls, .comparison-controls, .records-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .control-group { width: 100%; }
+    .station-checkboxes { min-width: 100%; }
+}
+
+@media (max-width: 768px) {
+    .comparison-charts, .charts-container { grid-template-columns: 1fr; }
+    .overview-stats { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .station-weather-grid { grid-template-columns: 1fr; gap: 12px; }
+    .analytics-controls { flex-direction: column; align-items: stretch; }
+    .station-checkboxes { min-width: 100%; }
+
+    /* Page Header */
+    .fluent-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .fluent-page-actions {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .view-mode-toggle {
+        width: 100%;
+        justify-content: center;
+        margin-right: 0;
+        margin-bottom: 8px;
+    }
+
+    .mode-btn { flex: 1; }
+
+    /* Overview Cards */
+    .overview-stat-card {
+        padding: 12px;
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+
+    .stat-icon-large { width: 40px; height: 40px; font-size: 20px; }
+    .stat-value-large { font-size: 20px; }
+
+    /* Station Cards */
+    .station-weather-card { padding: 16px; }
+    .station-temp-display { margin-bottom: 12px; }
+    .temp-big { font-size: 24px; }
+
+    /* Chart Section */
+    .chart-section { margin-bottom: 16px; }
+    .section-header { padding: 12px 16px; }
+    .section-header h3 { font-size: 14px; }
+    .chart-container { padding: 12px; height: 200px !important; }
+
+    /* Calendar */
+    .calendar-heatmap > div { grid-template-columns: repeat(2, 1fr) !important; }
+    .calendar-month { margin-bottom: 12px; }
+
+    /* Comparison */
+    .checkbox-grid { grid-template-columns: 1fr !important; max-height: 180px; }
+
+    /* Records */
+    .extreme-records { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .extreme-card { padding: 16px; }
+    .extreme-icon { width: 40px; height: 40px; font-size: 20px; margin-bottom: 8px; }
+    .extreme-value { font-size: 22px; }
+
+    /* Data View */
+    .filter-card { margin-bottom: 12px; }
+    .filter-header { padding: 12px 16px; }
+    .filter-body { padding: 16px; }
+    .filter-grid { grid-template-columns: 1fr; gap: 12px; }
+    .filter-actions { flex-direction: column; gap: 8px; }
+    .filter-actions .fluent-btn { width: 100%; justify-content: center; }
+
+    .results-header, .results-footer {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    .cards-grid { grid-template-columns: 1fr; gap: 12px; }
+    .weather-card { padding: 0; }
+    .weather-card-header { padding: 12px 16px; }
+    .weather-card-body { padding: 16px; }
+    .temp-display { padding-bottom: 12px; margin-bottom: 12px; }
+    .temp-value { font-size: 22px; }
+    .weather-stats-grid { gap: 8px; }
+
+    /* Table */
+    .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .data-table { min-width: 600px; }
+
+    /* Modal */
+    .modal-container { width: 95% !important; max-width: 95% !important; max-height: 95vh; }
+    .modal-header { padding: 16px; gap: 12px; }
+    .modal-header-icon { width: 40px; height: 40px; font-size: 18px; }
+    .modal-title { font-size: 16px; }
+    .modal-body { padding: 16px; max-height: calc(95vh - 160px); }
+    .modal-footer { padding: 12px 16px; flex-direction: column; gap: 8px; }
+    .modal-footer .fluent-btn { width: 100%; justify-content: center; }
+    .form-section-title { margin: 12px 0 8px; font-size: 12px; }
+
+    /* Bell Curve Analytics */
+    .bell-analytics-popup .bell-analytics-content { width: 95%; max-height: 90vh; }
+    .bell-analytics-header { padding: 16px 20px; }
+    .bell-analytics-header h3 { font-size: 16px; }
+    .bell-analytics-body { padding: 16px; }
+    .analytics-grid { grid-template-columns: 1fr; }
+    .analytics-grid.cols-3, .analytics-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+    .big-value .number, .big-value { font-size: 32px; }
+    .projection-box .projection-values { flex-wrap: wrap; gap: 12px; }
+    .analytics-footer { flex-direction: column; gap: 12px; text-align: center; }
+    .analytics-footer button { width: 100%; }
+
+    /* Formula Visualization */
+    .formula-hero { padding: 20px 16px; }
+    .formula-hero-title { font-size: 18px; }
+    .formula-equation { font-size: 22px; padding: 16px; }
+    .formula-meaning { grid-template-columns: 1fr; }
+    .calc-step { flex-direction: column; gap: 12px; }
+    .step-num { align-self: flex-start; }
+    .eng-result-header { flex-direction: column; gap: 12px; text-align: center; }
+    .formula-source-box { flex-direction: column; text-align: center; }
+    .source-icon { margin: 0 auto; }
+
+    /* Station Analysis */
+    .analysis-filter-header { padding: 12px 16px; }
+    .param-card { padding: 10px 12px; }
+    .param-icon { width: 32px; height: 32px; }
+    .station-chips-grid { gap: 6px; padding: 10px; max-height: 100px; }
+    .station-chip .chip-content { padding: 4px 10px; font-size: 11px; }
+}
+
+@media (max-width: 600px) {
+    .bell-curve-stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+    .overview-stats { grid-template-columns: 1fr; }
+    .extreme-records { grid-template-columns: 1fr; }
+    .fluent-page-title { font-size: 18px; }
+    .fluent-page-title-icon { width: 32px; height: 32px; font-size: 16px; }
+    .analytics-grid.cols-3, .analytics-grid.cols-4 { grid-template-columns: 1fr; }
+    .trend-indicator { flex-direction: column; text-align: center; }
+    .year-chips { justify-content: center; }
+}

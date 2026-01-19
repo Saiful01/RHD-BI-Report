@@ -1,0 +1,159 @@
+/* ==================== FLUENT UI - TABLE COMPONENTS ==================== */
+
+/* Table Wrapper */
+.fluent-table-wrapper { overflow-x: auto; }
+
+/* Base Table */
+.fluent-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fluent-font-size-md);
+}
+
+.fluent-table th {
+    background-color: var(--fluent-gray-10);
+    color: var(--fluent-text-primary);
+    font-weight: var(--fluent-font-weight-semibold);
+    text-align: left;
+    padding: var(--fluent-space-sm) var(--fluent-space-md);
+    border-bottom: 2px solid var(--fluent-gray-40);
+    white-space: nowrap;
+}
+
+.fluent-table td {
+    padding: var(--fluent-space-sm) var(--fluent-space-md);
+    border-bottom: 1px solid var(--fluent-gray-30);
+    vertical-align: middle;
+}
+
+.fluent-table tbody tr { transition: background-color var(--fluent-transition-fast); }
+.fluent-table tbody tr:hover { background-color: var(--fluent-gray-10); }
+.fluent-table tbody tr.selected { background-color: var(--fluent-primary-lighter); }
+
+/* ==================== DATATABLES OVERRIDE ==================== */
+.dataTables_wrapper {
+    padding: var(--fluent-space-md) 0;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: var(--fluent-space-md);
+}
+
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_filter input {
+    border: 1px solid var(--fluent-gray-40);
+    border-radius: var(--fluent-radius-md);
+    padding: 4px 8px;
+}
+
+.dataTables_wrapper .dataTables_filter input:focus {
+    outline: none;
+    border-color: var(--fluent-primary);
+    box-shadow: 0 0 0 1px var(--fluent-primary);
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border: 1px solid var(--fluent-gray-30) !important;
+    border-radius: var(--fluent-radius-md) !important;
+    padding: 6px 12px !important;
+    margin: 0 2px !important;
+    background: var(--fluent-bg-primary) !important;
+    transition: all var(--fluent-transition-fast) !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: var(--fluent-gray-20) !important;
+    border-color: var(--fluent-gray-40) !important;
+    color: var(--fluent-text-primary) !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: var(--fluent-primary) !important;
+    border-color: var(--fluent-primary) !important;
+    color: white !important;
+}
+
+.dataTables_wrapper .dataTables_info {
+    font-size: var(--fluent-font-size-sm);
+    color: var(--fluent-text-secondary);
+}
+
+table.dataTable thead th {
+    background: var(--fluent-gray-10);
+    border-bottom: 2px solid var(--fluent-gray-40);
+    font-weight: var(--fluent-font-weight-semibold);
+}
+
+table.dataTable tbody tr:hover { background-color: var(--fluent-gray-10); }
+
+/* DataTable Selected Rows */
+table.dataTable tbody tr.selected { background-color: var(--fluent-primary-light) !important; }
+table.dataTable tbody tr.selected:hover { background-color: var(--fluent-primary-lighter) !important; }
+
+/* DataTable Buttons */
+.dt-buttons .dt-button {
+    background: var(--fluent-bg-primary) !important;
+    border: 1px solid var(--fluent-gray-40) !important;
+    border-radius: var(--fluent-radius-md) !important;
+    padding: 6px 12px !important;
+}
+
+/* Table Cell Utilities */
+.cell-id {
+    font-weight: var(--fluent-font-weight-semibold);
+    color: var(--fluent-primary);
+}
+
+.cell-name {
+    font-weight: var(--fluent-font-weight-medium);
+    color: var(--fluent-text-primary);
+}
+
+.cell-date {
+    color: var(--fluent-text-secondary);
+    font-size: var(--fluent-font-size-sm);
+}
+
+.cell-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cell-status::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.cell-status.active::before { background-color: var(--fluent-success); }
+.cell-status.inactive::before { background-color: var(--fluent-gray-60); }
+.cell-status.pending::before { background-color: var(--fluent-warning); }
+
+/* Action Buttons in Table */
+.table-actions {
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+}
+
+.table-action-btn {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--fluent-gray-30);
+    background: var(--fluent-bg-primary);
+    border-radius: var(--fluent-radius-md);
+    color: var(--fluent-text-secondary);
+    cursor: pointer;
+    transition: all var(--fluent-transition-fast);
+}
+
+.table-action-btn:hover { background: var(--fluent-gray-20); color: var(--fluent-text-primary); }
+.table-action-btn.edit:hover { background: var(--fluent-primary-light); color: var(--fluent-primary); border-color: var(--fluent-primary); }
+.table-action-btn.delete:hover { background: var(--fluent-error-light); color: var(--fluent-error); border-color: var(--fluent-error); }
+.table-action-btn.view:hover { background: var(--fluent-info-light); color: var(--fluent-info); border-color: var(--fluent-info); }

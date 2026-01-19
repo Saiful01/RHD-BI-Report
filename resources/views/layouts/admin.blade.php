@@ -33,7 +33,13 @@
 
     <!-- Fluent UI Theme -->
     <link href="{{ asset('css/fluent-theme.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/fluent-components.css') }}" rel="stylesheet" />
+    <!-- Fluent Components (Modular) -->
+    <link href="{{ asset('css/fluent-components/loader.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/fluent-components/layout.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/fluent-components/components.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/fluent-components/forms.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/fluent-components/tables.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/fluent-components/utilities.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/fluent-utilities.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/context-menu.css') }}" rel="stylesheet" />
 

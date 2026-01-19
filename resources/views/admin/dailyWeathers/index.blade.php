@@ -961,7 +961,15 @@
 
 
 @section('styles')
-<link href="/css/daily-weather.css" rel="stylesheet">
+<!-- Daily Weather Modular CSS -->
+<link href="/css/daily-weather/variables.css" rel="stylesheet">
+<link href="/css/daily-weather/base.css" rel="stylesheet">
+<link href="/css/daily-weather/analytics.css" rel="stylesheet">
+<link href="/css/daily-weather/data.css" rel="stylesheet">
+<link href="/css/daily-weather/station-analysis.css" rel="stylesheet">
+<link href="/css/daily-weather/pavement.css" rel="stylesheet">
+<link href="/css/daily-weather/bell-curve.css" rel="stylesheet">
+<link href="/css/daily-weather/responsive.css" rel="stylesheet">
 @endsection
 
 

@@ -1,0 +1,318 @@
+/* ==================== DAILY WEATHER - PAVEMENT TEMPERATURE ANALYSIS ==================== */
+
+/* Pavement Table */
+.pavement-table { font-size: 12px; }
+.pavement-table th, .pavement-table td { white-space: nowrap; padding: 8px 12px !important; }
+.pavement-table .header-main th { background: var(--dw-gradient-dark); color: white; font-weight: 600; }
+.pavement-table .header-sub th { background: #2d3748; color: #e2e8f0; font-weight: 500; }
+.pavement-table .header-cols th { background: #4a5568; color: #f7fafc; font-weight: 500; font-size: 11px; }
+.pavement-table .group-stats { background: var(--dw-gradient-purple) !important; }
+.pavement-table .group-50 { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important; color: #1a1a2e !important; }
+.pavement-table .group-98 { background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%) !important; }
+
+.param-hint { display: none; }
+
+.formula-note {
+    margin-top: 16px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: var(--fluent-radius-md);
+    border-left: 4px solid var(--fluent-primary);
+    font-size: 13px;
+    color: var(--fluent-text-secondary);
+}
+
+.formula-note strong { color: var(--fluent-text-primary); }
+.formula-note sub { font-size: 10px; }
+.formula-source { display: block; margin-top: 8px; font-size: 11px; color: var(--fluent-text-tertiary); font-style: italic; }
+
+.summary-stat-card.pvt { border-left: 4px solid #8764B8; }
+.summary-stat-card.pvt .summary-stat-icon { background: var(--dw-gradient-purple); color: white; }
+
+/* Pavement Detail Modal */
+.modal-xl { max-width: 1000px; width: 95%; }
+
+.pavement-modal-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--fluent-gray-30);
+    background: var(--fluent-gray-10);
+    padding: 0 16px;
+}
+
+.pavement-tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 24px;
+    border: none;
+    background: transparent;
+    color: var(--fluent-text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: var(--dw-transition-normal);
+}
+
+.pavement-tab-btn:hover { color: var(--fluent-text-primary); background: var(--fluent-gray-20); }
+.pavement-tab-btn.active { color: var(--fluent-primary); border-bottom-color: var(--fluent-primary); background: white; }
+.pavement-tab-btn i { font-size: 18px; }
+
+.pavement-tab-content { display: none; padding: 24px; max-height: 65vh; overflow-y: auto; }
+.pavement-tab-content.active { display: block; }
+
+/* Pavement Chart Container */
+.pavement-chart-container {
+    background: white;
+    border-radius: var(--dw-card-radius);
+    border: 1px solid var(--fluent-gray-30);
+}
+
+.pavement-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--fluent-gray-20);
+}
+
+.pavement-chart-header h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--fluent-text-primary);
+}
+
+.pavement-chart-header h4 i { color: var(--fluent-primary); }
+
+.chart-legend-inline { display: flex; gap: 20px; font-size: 12px; color: var(--fluent-text-secondary); }
+.chart-legend-inline .legend-item { display: flex; align-items: center; gap: 6px; }
+.chart-legend-inline .dot { width: 10px; height: 10px; border-radius: 50%; }
+.chart-legend-inline .dot.high { background: var(--dw-temp-high); }
+.chart-legend-inline .dot.low { background: var(--dw-temp-low); }
+.chart-legend-inline .dot.mean { background: #8764B8; }
+
+.pavement-chart-wrapper { padding: 20px; height: 300px; }
+
+.pavement-chart-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--fluent-gray-10);
+    border-top: 1px solid var(--fluent-gray-20);
+}
+
+.chart-stat-item {
+    text-align: center;
+    padding: 12px;
+    background: white;
+    border-radius: var(--fluent-radius-md);
+    border: 1px solid var(--fluent-gray-20);
+}
+
+.chart-stat-item .stat-label {
+    font-size: 11px;
+    color: var(--fluent-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.chart-stat-item .stat-value { font-size: 20px; font-weight: 700; }
+.chart-stat-item.high .stat-value { color: var(--dw-temp-high); }
+.chart-stat-item.low .stat-value { color: var(--dw-temp-low); }
+
+/* Formula Explanation */
+.formula-explanation { padding: 0; }
+
+.formula-section {
+    background: white;
+    border-radius: var(--dw-card-radius);
+    border: 1px solid var(--fluent-gray-30);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.formula-section:last-child { margin-bottom: 0; }
+
+.formula-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--fluent-gray-10);
+    border-bottom: 1px solid var(--fluent-gray-20);
+}
+
+.formula-section-header .section-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--fluent-radius-md);
+    font-size: 18px;
+}
+
+.formula-section-header .section-icon.input { background: var(--dw-gradient-purple); color: white; }
+.formula-section-header .section-icon.calc { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; }
+.formula-section-header .section-icon.result { background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%); color: white; }
+.formula-section-header h4 { margin: 0; font-size: 15px; font-weight: 600; }
+
+.formula-section-body { padding: 20px; }
+
+.formula-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+.formula-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--fluent-gray-10);
+    border-radius: var(--fluent-radius-md);
+    border-left: 3px solid var(--fluent-primary);
+}
+
+.formula-item .item-label { font-size: 13px; color: var(--fluent-text-secondary); }
+.formula-item .item-value { font-size: 15px; font-weight: 600; color: var(--fluent-text-primary); }
+.formula-item.highlight { background: linear-gradient(135deg, rgba(0,120,212,0.1) 0%, rgba(0,120,212,0.05) 100%); border-left-color: var(--dw-temp-low); }
+.formula-item.high { border-left-color: var(--dw-temp-high); }
+.formula-item.low { border-left-color: var(--dw-temp-low); }
+.formula-item.pvt { border-left-color: #8764B8; }
+
+.formula-box {
+    background: var(--dw-gradient-dark);
+    border-radius: var(--fluent-radius-md);
+    padding: 20px;
+    margin: 16px 0;
+}
+
+.formula-box .formula-title {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.formula-box .formula-text {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 14px;
+    color: #50E6FF;
+    line-height: 1.8;
+}
+
+.formula-box .formula-text sub { font-size: 10px; color: #FFB900; }
+
+.calculation-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--fluent-gray-20);
+}
+
+.calculation-step:last-child { border-bottom: none; }
+
+.step-number {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--fluent-primary);
+    color: white;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.step-content { flex: 1; }
+.step-content .step-label { font-size: 13px; color: var(--fluent-text-secondary); margin-bottom: 4px; }
+
+.step-content .step-formula {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    color: var(--fluent-text-primary);
+    background: var(--fluent-gray-10);
+    padding: 8px 12px;
+    border-radius: var(--fluent-radius-sm);
+}
+
+.step-content .step-result { font-size: 14px; font-weight: 600; color: var(--fluent-primary); margin-top: 4px; }
+
+.verification-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--dw-gradient-green);
+    color: white;
+    border-radius: var(--fluent-radius-md);
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 16px;
+}
+
+.verification-badge i { font-size: 16px; }
+
+/* Inline Chart Section */
+.inline-chart-section {
+    margin-top: 24px;
+    background: white;
+    border-radius: var(--dw-card-radius);
+    border: 1px solid var(--fluent-gray-30);
+    overflow: hidden;
+}
+
+.inline-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: var(--fluent-gray-10);
+    border-bottom: 1px solid var(--fluent-gray-20);
+}
+
+.inline-chart-header h4 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 15px; font-weight: 600; }
+.inline-chart-body { padding: 20px; }
+.inline-chart-wrapper { height: 280px; }
+
+/* Clickable Row */
+.pavement-table tbody tr { cursor: pointer; transition: var(--dw-transition-normal); }
+.pavement-table tbody tr:hover { background: linear-gradient(135deg, rgba(0,120,212,0.08) 0%, rgba(0,120,212,0.04) 100%); }
+.pavement-table tbody tr:hover td { color: var(--fluent-primary); }
+.pavement-table tbody tr:hover td.col-station { font-weight: 600; }
+
+.click-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--fluent-gray-10);
+    border-radius: var(--fluent-radius-md);
+    font-size: 12px;
+    color: var(--fluent-text-secondary);
+    margin-top: 12px;
+}
+
+.click-hint i { color: var(--fluent-primary); }
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .pavement-table { font-size: 11px; }
+    .pavement-table th, .pavement-table td { padding: 6px 8px !important; }
+}
+
+@media (max-width: 768px) {
+    .formula-note { padding: 12px 16px; font-size: 12px; }
+    .pavement-chart-stats { grid-template-columns: repeat(2, 1fr); }
+    .formula-grid { grid-template-columns: 1fr; }
+    .chart-legend-inline { display: none; }
+}
