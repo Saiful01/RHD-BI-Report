@@ -102,10 +102,18 @@
                         dataType: 'json',
                         delay: 250,
                         data: params => ({ q: params.term }),
-                        processResults: data => ({ results: data })
+                        processResults: function (data) {
+                            return {
+                                results: data.map(item => ({
+                                    id: item.text,
+                                    text: item.text
+                                }))
+                            };
+                        }
                     }
                 });
             }
+
 
 
             // AJAX Select2
@@ -196,7 +204,7 @@
                        </tr>`;
                             });
 
-                            reportHtml += `</tbody></table></div>`; // <-- close table wrapper
+                            reportHtml += `</tbody></table></div>`;
                         });
 
 

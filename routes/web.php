@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\TenderController;
 use App\Http\Controllers\Admin\TenderItemController;
 
+
+
 Route::redirect('/', '/login');
 Route::get('/home', function () {
     if (session('status')) {
@@ -58,6 +60,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('tender-item-summary', [TenderItemController::class, 'summeryReport'])->name('tender-item.summeryReport');
 
 });
+
+
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
     // Change password
     if (file_exists(app_path('Http/Controllers/Auth/ChangePasswordController.php'))) {

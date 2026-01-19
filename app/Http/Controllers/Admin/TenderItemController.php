@@ -114,9 +114,7 @@ class TenderItemController extends Controller
 
     public function summeryReport(Request $request)
     {
-        // =========================
-        // AJAX REQUEST FOR DATA
-        // =========================
+
         if ($request->ajax()) {
             $query = TenderItem::with(['tender', 'division'])
                 ->whereHas('division')
@@ -177,9 +175,7 @@ class TenderItemController extends Controller
             ]);
         }
 
-        // =========================
-        // LOAD FILTER DATA
-        // =========================
+
         $divisions = TenderDivision::pluck('division', 'id');
         $ministries = Tender::distinct()->pluck('ministry_division')->filter()->toArray();
         $districts = Tender::distinct()->pluck('procuring_entity_district')->filter()->toArray();
