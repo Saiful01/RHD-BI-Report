@@ -79,6 +79,7 @@
 }
 
 .fluent-btn-primary:hover { background-color: var(--fluent-primary-dark); border-color: var(--fluent-primary-dark); color: white; }
+.fluent-btn-primary:active { background-color: #004080; border-color: #004080; color: white; }
 
 /* Secondary Button */
 .fluent-btn-secondary {
@@ -88,6 +89,7 @@
 }
 
 .fluent-btn-secondary:hover { background-color: var(--fluent-gray-40); color: var(--fluent-text-primary); }
+.fluent-btn-secondary:active { background-color: var(--fluent-gray-50); color: var(--fluent-text-primary); }
 
 /* Success Button */
 .fluent-btn-success {
@@ -97,6 +99,7 @@
 }
 
 .fluent-btn-success:hover { background-color: #0B7A0B; border-color: #0B7A0B; color: white; }
+.fluent-btn-success:active { background-color: #095809; border-color: #095809; color: white; }
 
 /* Danger Button */
 .fluent-btn-danger {
@@ -106,6 +109,7 @@
 }
 
 .fluent-btn-danger:hover { background-color: #B52B2B; border-color: #B52B2B; color: white; }
+.fluent-btn-danger:active { background-color: #8B2020; border-color: #8B2020; color: white; }
 
 /* Warning Button */
 .fluent-btn-warning {
@@ -115,6 +119,7 @@
 }
 
 .fluent-btn-warning:hover { background-color: #E69900; border-color: #E69900; color: #1a1a2e; }
+.fluent-btn-warning:active { background-color: #CC8800; border-color: #CC8800; color: #1a1a2e; }
 
 /* Info Button */
 .fluent-btn-info {
@@ -124,6 +129,7 @@
 }
 
 .fluent-btn-info:hover { background-color: #005A9E; border-color: #005A9E; color: white; }
+.fluent-btn-info:active { background-color: #004578; border-color: #004578; color: white; }
 
 /* Light Button */
 .fluent-btn-light { background-color: var(--fluent-white, #fff); color: var(--fluent-primary); border-color: var(--fluent-white, #fff); font-weight: 600; }
