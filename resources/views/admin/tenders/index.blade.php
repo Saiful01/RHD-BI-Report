@@ -1228,6 +1228,9 @@
     font-size: 14px;
     color: var(--fluent-text-primary);
     font-weight: 500;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.4;
 }
 .items-summary {
     display: flex;
@@ -1308,6 +1311,8 @@
     font-size: 13px;
     color: var(--fluent-text-primary);
     border-bottom: 1px solid var(--fluent-gray-20);
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 .items-table tbody tr:last-child td {
     border-bottom: none;
@@ -1858,10 +1863,13 @@ $(function () {
             type: 'GET',
             success: function(response) {
                 if (response.success) {
-                    renderItemsModalContent(response.tender, response.items, response.totalAmount);
+                    renderItemsModalContent(response.tender, response.items || [], response.totalAmount);
+                } else {
+                    $('#items_modal_body').html('<div class="modal-loading"><i class="ri-error-warning-line" style="animation:none;color:var(--fluent-warning);"></i><p>No data returned</p></div>');
                 }
             },
-            error: function() {
+            error: function(xhr, status, error) {
+                console.error('Items load error:', error, xhr.responseText);
                 $('#items_modal_body').html('<div class="modal-loading"><i class="ri-error-warning-line" style="animation:none;color:var(--fluent-danger);"></i><p>Error loading items</p></div>');
             }
         });
@@ -1877,12 +1885,15 @@ $(function () {
             return parseFloat(value || 0).toLocaleString('en-BD', {minimumFractionDigits: 2, maximumFractionDigits: 2});
         };
 
-        $('#items_tender_id').text('Tender ID: ' + tender.tenderid);
+        $('#items_tender_id').text('Tender ID: ' + (tender.tenderid || tender.id || 'N/A'));
 
         let itemsHtml = '';
         let grandTotal = 0;
 
-        items.forEach(item => {
+        // Ensure items is an array
+        const itemsArray = Array.isArray(items) ? items : [];
+
+        itemsArray.forEach(item => {
             const lineTotal = parseFloat(item.item_quantity) * parseFloat(item.item_rate);
             grandTotal += lineTotal;
             itemsHtml += `
@@ -1921,7 +1932,7 @@ $(function () {
                 <div class="items-summary-card count">
                     <div class="items-summary-icon"><i class="ri-stack-line"></i></div>
                     <div class="items-summary-content">
-                        <span class="items-summary-value">${items.length}</span>
+                        <span class="items-summary-value">${itemsArray.length}</span>
                         <span class="items-summary-label">Total Items</span>
                     </div>
                 </div>
@@ -1947,7 +1958,7 @@ $(function () {
                         </tr>
                     </thead>
                     <tbody>
-                        ${itemsHtml || '<tr><td colspan="6" class="text-center">No items found</td></tr>'}
+                        ${itemsHtml || '<tr><td colspan="6" class="text-center" style="padding:40px 20px;"><div style="color:var(--fluent-text-secondary);"><i class="ri-inbox-line" style="font-size:32px;display:block;margin-bottom:8px;opacity:0.5;"></i>No items found for this tender</div></td></tr>'}
                     </tbody>
                     <tfoot>
                         <tr>

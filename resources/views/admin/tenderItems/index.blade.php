@@ -740,6 +740,9 @@
     font-size: 14px;
     color: var(--fluent-text-primary);
     font-weight: 500;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
 }
 .detail-value.mono {
     font-family: 'Consolas', monospace;
