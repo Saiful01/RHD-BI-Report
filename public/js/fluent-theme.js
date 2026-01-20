@@ -159,11 +159,27 @@ function initSidebar() {
     const toggleBtn = document.querySelector('.fluent-header-toggle');
     const overlay = document.querySelector('.fluent-sidebar-overlay');
 
+    function closeSidebar() {
+        sidebar?.classList.remove('open');
+        overlay?.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function openSidebar() {
+        sidebar?.classList.add('open');
+        overlay?.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
     if (toggleBtn && sidebar) {
         toggleBtn.addEventListener('click', function() {
             if (window.innerWidth <= 992) {
                 // Mobile: Toggle open/close
-                sidebar.classList.toggle('open');
+                if (sidebar.classList.contains('open')) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
             } else {
                 // Desktop: Toggle pinned/expanded state
                 sidebar.classList.toggle('expanded');
@@ -196,10 +212,17 @@ function initSidebar() {
 
     // Close sidebar on overlay click (mobile)
     if (overlay) {
-        overlay.addEventListener('click', function() {
-            sidebar.classList.remove('open');
-        });
+        overlay.addEventListener('click', closeSidebar);
     }
+
+    // Close sidebar when clicking a nav link (mobile)
+    document.querySelectorAll('.fluent-nav-link').forEach(function(link) {
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= 992 && sidebar?.classList.contains('open')) {
+                closeSidebar();
+            }
+        });
+    });
 
     // Restore sidebar state (pinned expanded)
     if (localStorage.getItem('sidebarExpanded') === 'true' && window.innerWidth > 992) {
@@ -214,7 +237,14 @@ function initSidebar() {
     // Handle window resize
     window.addEventListener('resize', function() {
         if (window.innerWidth > 992) {
-            sidebar?.classList.remove('open');
+            closeSidebar();
+        }
+    });
+
+    // Close sidebar on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && sidebar?.classList.contains('open')) {
+            closeSidebar();
         }
     });
 }

@@ -73,13 +73,13 @@
             </div>
         @endif
 
-        <div class="d-flex align-center gap-4">
-            <div class="fluent-user-avatar" style="width: 64px; height: 64px; font-size: 24px;">
+        <div class="d-flex align-center gap-3 flex-wrap">
+            <div class="fluent-user-avatar" style="width: 56px; height: 56px; font-size: 22px;">
                 {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
             </div>
             <div>
-                <h3 class="mb-1">Hello, {{ auth()->user()->name ?? 'User' }}!</h3>
-                <p class="text-secondary mb-0">You are logged in to the RHD BI Report system.</p>
+                <h3 class="mb-1" style="font-size: 18px;">Hello, {{ auth()->user()->name ?? 'User' }}!</h3>
+                <p class="text-secondary mb-0" style="font-size: 14px;">You are logged in to the RHD BI Report system.</p>
             </div>
         </div>
     </div>
