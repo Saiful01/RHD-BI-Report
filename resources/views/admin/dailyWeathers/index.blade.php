@@ -360,34 +360,15 @@
         </div>
 
         <div class="analysis-filter-body">
-            <!-- Station Selection -->
-            <div class="filter-section">
-                <div class="filter-section-header">
-                    <h4><i class="ri-map-pin-line"></i> Select Stations (up to 6)</h4>
-                    <div class="station-quick-actions">
-                        <button type="button" class="quick-action-btn" onclick="selectAllAnalysisStations()">
-                            <i class="ri-checkbox-multiple-line"></i> Select All
-                        </button>
-                        <button type="button" class="quick-action-btn" onclick="deselectAllAnalysisStations()">
-                            <i class="ri-checkbox-blank-line"></i> Deselect All
-                        </button>
+            <!-- Parameters Grid -->
+            <div class="params-grid params-grid-5">
+                <div class="param-card param-card-wide">
+                    <div class="param-icon station"><i class="ri-map-pin-line"></i></div>
+                    <div class="param-content">
+                        <label>Select Stations (up to 6)</label>
+                        <div id="analysisStationSelect" class="multiselect-container"></div>
                     </div>
                 </div>
-                <div class="station-chips-grid" id="analysisStationGrid">
-                    @foreach($stations as $id => $name)
-                    <label class="station-chip">
-                        <input type="checkbox" name="analysis_stations[]" value="{{ $id }}" class="analysis-station-cb">
-                        <span class="chip-content">
-                            <i class="ri-map-pin-2-line"></i>
-                            <span class="chip-label">{{ $name }}</span>
-                        </span>
-                    </label>
-                    @endforeach
-                </div>
-            </div>
-
-            <!-- Parameters Grid -->
-            <div class="params-grid">
                 <div class="param-card">
                     <div class="param-icon param-date"><i class="ri-calendar-event-line"></i></div>
                     <div class="param-content">
@@ -592,34 +573,15 @@
         </div>
 
         <div class="analysis-filter-body">
-            <!-- Station Selection -->
-            <div class="filter-section">
-                <div class="filter-section-header">
-                    <h4><i class="ri-map-pin-line"></i> Select Stations</h4>
-                    <div class="station-quick-actions">
-                        <button type="button" class="quick-action-btn" onclick="selectAllPavementStations()">
-                            <i class="ri-checkbox-multiple-line"></i> Select All
-                        </button>
-                        <button type="button" class="quick-action-btn" onclick="deselectAllPavementStations()">
-                            <i class="ri-checkbox-blank-line"></i> Deselect All
-                        </button>
+            <!-- Parameters Grid -->
+            <div class="params-grid params-grid-5">
+                <div class="param-card param-card-wide">
+                    <div class="param-icon station"><i class="ri-map-pin-line"></i></div>
+                    <div class="param-content">
+                        <label>Select Stations</label>
+                        <div id="pavementStationSelect" class="multiselect-container"></div>
                     </div>
                 </div>
-                <div class="station-chips-grid" id="pavementStationGrid">
-                    @foreach($stations as $id => $name)
-                    <label class="station-chip">
-                        <input type="checkbox" name="pavement_stations[]" value="{{ $id }}" class="pavement-station-cb">
-                        <span class="chip-content">
-                            <i class="ri-map-pin-2-line"></i>
-                            <span class="chip-label">{{ $name }}</span>
-                        </span>
-                    </label>
-                    @endforeach
-                </div>
-            </div>
-
-            <!-- Parameters Grid -->
-            <div class="params-grid">
                 <div class="param-card">
                     <div class="param-icon param-date"><i class="ri-calendar-event-line"></i></div>
                     <div class="param-content">
@@ -966,17 +928,57 @@
 <link href="/css/daily-weather/variables.css" rel="stylesheet">
 <link href="/css/daily-weather/base.css" rel="stylesheet">
 <link href="/css/daily-weather/analytics.css" rel="stylesheet">
-<link href="/css/daily-weather/data.css" rel="stylesheet">
+<link href="/css/daily-weather/data.css?v={{ time() }}" rel="stylesheet">
 <link href="/css/daily-weather/station-analysis.css" rel="stylesheet">
 <link href="/css/daily-weather/pavement.css" rel="stylesheet">
 <link href="/css/daily-weather/bell-curve.css" rel="stylesheet">
 <link href="/css/daily-weather/responsive.css" rel="stylesheet">
+<link href="/css/daily-weather/multiselect.css?v={{ time() }}" rel="stylesheet">
+<style>
+/* Grid layout for 5 columns */
+.params-grid-5 {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 16px;
+}
+.param-card-wide {
+    grid-column: span 1;
+}
+.param-icon.station {
+    background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+    color: white;
+}
+@media (max-width: 1400px) {
+    .params-grid-5 {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .param-card-wide {
+        grid-column: span 1;
+    }
+}
+@media (max-width: 768px) {
+    .params-grid-5 {
+        grid-template-columns: 1fr;
+    }
+    .param-card-wide {
+        grid-column: span 1;
+    }
+}
+</style>
 @endsection
 
 
 @section('scripts')
+<script src="/js/daily-weather/multiselect.js?v={{ time() }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+// Station data for multiselect
+const stationData = @json($stations);
+
+// Multiselect instances
+let analysisStationMultiselect;
+let pavementStationMultiselect;
+
 // Global variables
 let currentMode = 'stationAnalytics';
 let currentPage = 1;
@@ -988,6 +990,28 @@ const perPage = 12;
 // Initialize
 $(function() {
     initCharts();
+
+    // Initialize station multiselects
+    analysisStationMultiselect = createStationMultiselect('analysisStationSelect', stationData, {
+        selectAllByDefault: false,
+        placeholder: 'Select stations (up to 6)...',
+        searchPlaceholder: 'Search stations...',
+        maxTagsVisible: 3,
+        onChange: function(selected) {
+            // Limit to 6 stations for analysis
+            if (selected.length > 6) {
+                // Keep only first 6
+                const limited = selected.slice(0, 6);
+                analysisStationMultiselect.setSelected(limited);
+            }
+        }
+    });
+
+    pavementStationMultiselect = createStationMultiselect('pavementStationSelect', stationData, {
+        selectAllByDefault: true,
+        placeholder: 'Select stations...',
+        searchPlaceholder: 'Search stations...'
+    });
 
     // Set default dates for Station Analysis (last year)
     const lastYear = new Date().getFullYear() - 1;
@@ -1015,16 +1039,6 @@ $(function() {
     // Station Analysis event handlers
     $('#runAnalysis').on('click', runStationAnalysis);
     $('#runPavementAnalysis').on('click', runPavementAnalysis);
-
-    // Limit station selection to 6
-    $(document).on('change', '.analysis-station-cb', function() {
-        const checkedCount = $('.analysis-station-cb:checked').length;
-        if (checkedCount >= 6) {
-            $('.analysis-station-cb:not(:checked)').prop('disabled', true);
-        } else {
-            $('.analysis-station-cb').prop('disabled', false);
-        }
-    });
 
     // Mode toggle
     $('.mode-btn').on('click', function() {
@@ -1204,20 +1218,18 @@ function renderCalendarHeatmap(data, metric, year) {
 
 // ==================== STATION ANALYSIS ====================
 function selectAllAnalysisStations() {
-    const maxStations = 6;
-    let count = 0;
-    $('.analysis-station-cb').each(function() {
-        if (count < maxStations) {
-            $(this).prop('checked', true).prop('disabled', false);
-            count++;
-        } else {
-            $(this).prop('checked', false).prop('disabled', true);
-        }
-    });
+    if (analysisStationMultiselect) {
+        // Select first 6 stations
+        const allValues = analysisStationMultiselect.options.items.map(item => String(item.value));
+        const limited = allValues.slice(0, 6);
+        analysisStationMultiselect.setSelected(limited);
+    }
 }
 
 function deselectAllAnalysisStations() {
-    $('.analysis-station-cb').prop('checked', false).prop('disabled', false);
+    if (analysisStationMultiselect) {
+        analysisStationMultiselect.deselectAll();
+    }
 }
 
 function initAnalysisCharts() {
@@ -1244,14 +1256,18 @@ function initAnalysisCharts() {
 }
 
 function runStationAnalysis() {
-    const selectedStations = [];
-    $('.analysis-station-cb:checked').each(function() {
-        selectedStations.push($(this).val());
-    });
+    let selectedStations = [];
+    if (analysisStationMultiselect) {
+        selectedStations = analysisStationMultiselect.getSelectedValues();
+    }
 
     if (selectedStations.length === 0) {
         alert('Please select at least one station');
         return;
+    }
+
+    if (selectedStations.length > 6) {
+        selectedStations = selectedStations.slice(0, 6);
     }
 
     showLoading();
@@ -1504,11 +1520,15 @@ const PAVEMENT_CACHE_KEY = 'pavementAnalysisCache';
 const PAVEMENT_CACHE_EXPIRY = 30 * 60 * 1000; // 30 minutes
 
 function selectAllPavementStations() {
-    $('.pavement-station-cb').prop('checked', true);
+    if (pavementStationMultiselect) {
+        pavementStationMultiselect.selectAll();
+    }
 }
 
 function deselectAllPavementStations() {
-    $('.pavement-station-cb').prop('checked', false);
+    if (pavementStationMultiselect) {
+        pavementStationMultiselect.deselectAll();
+    }
 }
 
 // Cache management functions
@@ -1614,10 +1634,10 @@ function renderPavementFromData(res) {
 }
 
 function runPavementAnalysis() {
-    const selectedStations = [];
-    $('.pavement-station-cb:checked').each(function() {
-        selectedStations.push($(this).val());
-    });
+    let selectedStations = [];
+    if (pavementStationMultiselect) {
+        selectedStations = pavementStationMultiselect.getSelectedValues();
+    }
 
     if (selectedStations.length === 0) {
         alert('Please select at least one station');
@@ -1710,7 +1730,7 @@ function renderPavementStatsTable(data) {
     let tbody = '';
     data.forEach((row, index) => {
         tbody += `
-            <tr onclick="openPavementDetailModal(${index})" title="Click to view details">
+            <tr class="pavement-row-clickable" data-index="${index}" title="Click to view details" style="cursor: pointer;">
                 <td class="col-station">${escapeHtml(row.station_name)}</td>
                 <td>${row.lon}</td>
                 <td>${row.lat}</td>
@@ -1817,8 +1837,12 @@ function printPavementAnalysis() {
 
 // ==================== PAVEMENT DETAIL MODAL ====================
 function openPavementDetailModal(index) {
+    console.log('openPavementDetailModal called with index:', index);
     const data = pavementAnalysisData[index];
-    if (!data) return;
+    if (!data) {
+        console.log('No data found for index:', index);
+        return;
+    }
 
     // Update modal title
     $('#pavementDetailTitle').text(data.station_name);
@@ -1828,14 +1852,14 @@ function openPavementDetailModal(index) {
     $('.pavement-tab-btn').removeClass('active').first().addClass('active');
     $('.pavement-tab-content').removeClass('active').first().addClass('active');
 
-    // Render chart
-    renderPavementDetailChart(data);
-
-    // Render formula explanation
-    renderPavementFormulaExplanation(data);
-
-    // Open modal
+    // Open modal FIRST so canvas elements are visible
     openModal('pavementDetailModal');
+
+    // Render charts AFTER modal is visible (small delay for DOM update)
+    setTimeout(() => {
+        renderPavementDetailChart(data);
+        renderPavementFormulaExplanation(data);
+    }, 50);
 }
 
 // Tab switching
@@ -1845,6 +1869,15 @@ $(document).on('click', '.pavement-tab-btn', function() {
     $(this).addClass('active');
     $('.pavement-tab-content').removeClass('active');
     $(`#pavementTab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).addClass('active');
+});
+
+// Pavement table row click - using event delegation for reliability
+$(document).on('click', '.pavement-row-clickable', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const index = parseInt($(this).data('index'), 10);
+    console.log('Pavement row clicked, index:', index);
+    openPavementDetailModal(index);
 });
 
 let highTempBellChart = null;
@@ -2008,7 +2041,12 @@ function renderYearlyDataTable(yearlyData, avgHigh, stdHigh, avgLow, stdLow) {
 }
 
 function renderBellCurve(canvasId, mean, std, yearlyData, key, color, type) {
-    const container = document.getElementById(canvasId).parentElement;
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) {
+        console.warn('Canvas not found:', canvasId);
+        return;
+    }
+    const container = canvas.parentElement;
     if (!container) return;
 
     const width = container.offsetWidth || 400;
@@ -3382,9 +3420,34 @@ function exportCSV() {
 }
 
 // Modal functions
-function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
-function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
-document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); }));
+function openModal(id) {
+    console.log('Opening modal:', id);
+    const modal = document.getElementById(id);
+    if (modal) {
+        modal.style.display = 'flex';
+        requestAnimationFrame(() => {
+            modal.classList.add('active');
+        });
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeModal(id) {
+    console.log('Closing modal:', id);
+    const modal = document.getElementById(id);
+    if (modal) {
+        modal.classList.remove('active');
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
+
+// Modal overlay click to close
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-overlay') && e.target.classList.contains('active')) {
+        closeModal(e.target.id);
+    }
+});
 
 function openCreateModal() {
     document.getElementById('editModalIcon').className = 'modal-header-icon create';
@@ -3464,5 +3527,6 @@ function formatDate(dateStr) {
 function viewStationDetails(stationId) {
     window.location.href = '/admin/stations?view=' + stationId;
 }
+
 </script>
 @endsection

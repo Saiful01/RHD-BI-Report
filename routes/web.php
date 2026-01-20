@@ -44,7 +44,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('daily-weathers/weekly-trend', 'DailyWeatherController@weeklyTrend')->name('daily-weathers.weeklyTrend');
     Route::get('daily-weathers/weather-report-data', 'DailyWeatherController@weatherReportData')->name('daily-weathers.weatherReportData');
     Route::get('daily-weathers/pavement-analysis-data', 'DailyWeatherController@pavementAnalysisData')->name('daily-weathers.pavementAnalysisData');
+    Route::get('daily-weathers/construction-analysis-data', 'DailyWeatherController@constructionAnalysisData')->name('daily-weathers.constructionAnalysisData');
     Route::resource('daily-weathers', 'DailyWeatherController');
+
+    // Construction Weather Analysis (standalone page)
+    Route::get('construction-weather', 'ConstructionWeatherController@index')->name('construction-weather.index');
+    Route::get('construction-weather/analysis-data', 'ConstructionWeatherController@analysisData')->name('construction-weather.analysisData');
 
     // Weather Report
     Route::delete('weather-reports/destroy', 'WeatherReportController@massDestroy')->name('weather-reports.massDestroy');

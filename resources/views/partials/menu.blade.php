@@ -106,6 +106,21 @@
                         <span class="fluent-nav-tooltip">Pavement Temperature Analysis</span>
                     </a>
                 </div>
+                <div class="fluent-nav-item">
+                    <a href="{{ route('admin.construction-weather.index') }}" class="fluent-nav-link {{ request()->is('admin/construction-weather*') ? 'active' : '' }}">
+                        <span class="fluent-nav-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="10" width="18" height="11" rx="1" stroke="#8B5CF6" stroke-width="1.5" fill="none"/>
+                                <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="#8B5CF6" stroke-width="1.5" fill="none"/>
+                                <circle cx="6" cy="4" r="2" fill="#F59E0B"/>
+                                <path d="M6 6v2" stroke="#F59E0B" stroke-width="1"/>
+                                <path d="M18 5l-2 2M18 5l2 2" stroke="#3B82F6" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                        </span>
+                        <span class="fluent-nav-text">Construction Weather</span>
+                        <span class="fluent-nav-tooltip">Construction Weather Analysis</span>
+                    </a>
+                </div>
             @endcan
 
             @can('tender_data_access')
