@@ -17,9 +17,7 @@ class StationController extends Controller
     {
         abort_if(Gate::denies('station_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $stations = Station::whereBetween('lat', [20.6708, 26.6345])
-            ->whereBetween('lon', [88.0100, 92.6736])
-            ->get();
+        $stations = Station::all();
 
         return view('admin.stations.index', compact('stations'));
     }
