@@ -1363,4 +1363,77 @@ function renderCalendarSummary(monthlyStats, annualStats) {
 // Initialize when document ready
 $(document).ready(function() {
     $('#runConstructionAnalysis').on('click', runConstructionAnalysis);
+
+    // Initialize tooltip positioning
+    initWeatherStatTooltips();
 });
+
+// Tooltip positioning for weather stat cards
+function initWeatherStatTooltips() {
+    $(document).on('mouseenter', '.weather-stat-card .tooltip-trigger', function(e) {
+        const trigger = $(this);
+        const card = trigger.closest('.weather-stat-card');
+        const tooltip = card.find('.tooltip-content');
+
+        if (tooltip.length === 0) return;
+
+        // Get trigger position
+        const triggerRect = trigger[0].getBoundingClientRect();
+        const tooltipWidth = 320;
+        const tooltipHeight = tooltip.outerHeight() || 300;
+        const padding = 12;
+
+        // Calculate position - prefer below the trigger
+        let top = triggerRect.bottom + padding;
+        let left = triggerRect.left + (triggerRect.width / 2) - (tooltipWidth / 2);
+
+        // Adjust if tooltip goes off right edge
+        if (left + tooltipWidth > window.innerWidth - padding) {
+            left = window.innerWidth - tooltipWidth - padding;
+        }
+
+        // Adjust if tooltip goes off left edge
+        if (left < padding) {
+            left = padding;
+        }
+
+        // If tooltip would go below viewport, show above
+        if (top + tooltipHeight > window.innerHeight - padding) {
+            top = triggerRect.top - tooltipHeight - padding;
+        }
+
+        // If still doesn't fit, center in viewport
+        if (top < padding) {
+            top = (window.innerHeight - tooltipHeight) / 2;
+            left = (window.innerWidth - tooltipWidth) / 2;
+        }
+
+        tooltip.css({
+            top: top + 'px',
+            left: left + 'px'
+        });
+
+        tooltip.addClass('show');
+    });
+
+    $(document).on('mouseleave', '.weather-stat-card .tooltip-trigger', function(e) {
+        const card = $(this).closest('.weather-stat-card');
+        const tooltip = card.find('.tooltip-content');
+
+        // Small delay to allow moving to tooltip
+        setTimeout(function() {
+            if (!tooltip.is(':hover') && !card.find('.tooltip-trigger:hover').length) {
+                tooltip.removeClass('show');
+            }
+        }, 100);
+    });
+
+    $(document).on('mouseleave', '.weather-stat-card .tooltip-content', function(e) {
+        $(this).removeClass('show');
+    });
+
+    // Allow tooltip to stay open when hovering over it
+    $(document).on('mouseenter', '.weather-stat-card .tooltip-content', function(e) {
+        $(this).addClass('show');
+    });
+}
