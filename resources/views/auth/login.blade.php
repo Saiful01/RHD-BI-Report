@@ -91,31 +91,51 @@
                         <i class="ri-login-box-line mr-2"></i>
                         {{ trans('global.login') }}
                     </span>
-                    <span class="btn-loader" style="display: none;">
+                    <span class="btn-loader">
                         <svg class="spinner" viewBox="0 0 24 24" width="20" height="20">
                             <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="31.4" stroke-linecap="round">
                                 <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="0.8s" repeatCount="indefinite"/>
                             </circle>
                         </svg>
-                        Signing in...
+                        <span>Signing in...</span>
                     </span>
                 </button>
             </div>
         </form>
 
+<style>
+.login-btn {
+    position: relative;
+}
+.login-btn .btn-text,
+.login-btn .btn-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+}
+.login-btn .btn-loader {
+    display: none;
+}
+.login-btn.loading .btn-text {
+    display: none;
+}
+.login-btn.loading .btn-loader {
+    display: flex;
+}
+.login-btn.loading {
+    opacity: 0.85;
+    pointer-events: none;
+}
+.login-btn .spinner {
+    flex-shrink: 0;
+}
+</style>
+
 <script>
 document.querySelector('form').addEventListener('submit', function(e) {
-    const btn = document.getElementById('loginBtn');
-    const btnText = btn.querySelector('.btn-text');
-    const btnLoader = btn.querySelector('.btn-loader');
-
-    btn.disabled = true;
-    btn.style.opacity = '0.8';
-    btnText.style.display = 'none';
-    btnLoader.style.display = 'inline-flex';
-    btnLoader.style.alignItems = 'center';
-    btnLoader.style.justifyContent = 'center';
-    btnLoader.style.gap = '8px';
+    document.getElementById('loginBtn').classList.add('loading');
 });
 </script>
     </div>
