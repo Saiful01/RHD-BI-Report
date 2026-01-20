@@ -238,6 +238,8 @@
 
             <!-- Tab Content: Monthly -->
             <div class="construction-tab-content active" id="constructionTabMonthly">
+                <!-- Weather Statistics Summary -->
+                <div class="weather-stats-summary" id="constructionWeatherStats"></div>
                 <div class="monthly-heatmap" id="constructionDetailHeatmap"></div>
                 <div class="score-breakdown" id="constructionScoreBreakdown"></div>
                 <div class="chart-container" style="height: 300px; margin-top: 24px;">

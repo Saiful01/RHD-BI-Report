@@ -468,6 +468,9 @@ function openConstructionDetailModal(index) {
 
     // Render charts AFTER modal is visible (small delay for DOM update)
     setTimeout(function() {
+        // Render weather statistics summary
+        renderConstructionWeatherStats(data.annual_stats, data.monthly_stats);
+
         // Render monthly heatmap in modal
         renderConstructionDetailHeatmap(data.monthly_stats);
 
@@ -495,6 +498,124 @@ $(document).on('click', '.construction-tab-btn', function() {
     $('.construction-tab-content').removeClass('active');
     $(`#constructionTab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).addClass('active');
 });
+
+function renderConstructionWeatherStats(annualStats, monthlyStats) {
+    if (!annualStats) return;
+
+    // Calculate averages from monthly stats if available
+    let avgTemp = '-';
+    if (monthlyStats && monthlyStats.length > 0) {
+        const maxTemps = monthlyStats.map(m => m.max_temp?.mean || 0).filter(v => v > 0);
+        const minTemps = monthlyStats.map(m => m.min_temp?.mean || 0).filter(v => v > 0);
+        if (maxTemps.length > 0 && minTemps.length > 0) {
+            const avgMax = maxTemps.reduce((a, b) => a + b, 0) / maxTemps.length;
+            const avgMin = minTemps.reduce((a, b) => a + b, 0) / minTemps.length;
+            avgTemp = ((avgMax + avgMin) / 2).toFixed(1);
+        }
+    }
+
+    const maxTemp = annualStats.max_temp_avg || {};
+    const minTemp = annualStats.min_temp_avg || {};
+    const maxTempExtreme = annualStats.max_temp_extreme || {};
+    const minTempExtreme = annualStats.min_temp_extreme || {};
+    const rainfall = annualStats.annual_rainfall || {};
+
+    let html = `
+        <div class="weather-stat-card">
+            <div class="weather-stat-header">
+                <div class="weather-stat-icon temp-max">
+                    <i class="ri-temp-hot-line"></i>
+                </div>
+                <span class="weather-stat-title">Max Temperature</span>
+            </div>
+            <div class="weather-stat-values">
+                <div class="weather-stat-main">
+                    <span class="weather-stat-value">${maxTemp.mean || '-'}</span>
+                    <span class="weather-stat-unit">°C avg</span>
+                </div>
+                <div class="weather-stat-details">
+                    <span class="weather-stat-detail high">
+                        <i class="ri-arrow-up-line"></i> Extreme: ${maxTempExtreme.mean || '-'}°C
+                    </span>
+                    <span class="weather-stat-detail">
+                        <i class="ri-percent-line"></i> 98%: ${maxTemp.reliability_98 || '-'}°C
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="weather-stat-card">
+            <div class="weather-stat-header">
+                <div class="weather-stat-icon temp-min">
+                    <i class="ri-temp-cold-line"></i>
+                </div>
+                <span class="weather-stat-title">Min Temperature</span>
+            </div>
+            <div class="weather-stat-values">
+                <div class="weather-stat-main">
+                    <span class="weather-stat-value">${minTemp.mean || '-'}</span>
+                    <span class="weather-stat-unit">°C avg</span>
+                </div>
+                <div class="weather-stat-details">
+                    <span class="weather-stat-detail low">
+                        <i class="ri-arrow-down-line"></i> Extreme: ${minTempExtreme.mean || '-'}°C
+                    </span>
+                    <span class="weather-stat-detail">
+                        <i class="ri-percent-line"></i> 98%: ${minTemp.reliability_98 || '-'}°C
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="weather-stat-card">
+            <div class="weather-stat-header">
+                <div class="weather-stat-icon temp-avg">
+                    <i class="ri-thermometer-line"></i>
+                </div>
+                <span class="weather-stat-title">Average Temperature</span>
+            </div>
+            <div class="weather-stat-values">
+                <div class="weather-stat-main">
+                    <span class="weather-stat-value">${avgTemp}</span>
+                    <span class="weather-stat-unit">°C</span>
+                </div>
+                <div class="weather-stat-details">
+                    <span class="weather-stat-detail high">
+                        <i class="ri-arrow-up-line"></i> High: ${maxTemp.mean || '-'}°C
+                    </span>
+                    <span class="weather-stat-detail low">
+                        <i class="ri-arrow-down-line"></i> Low: ${minTemp.mean || '-'}°C
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="weather-stat-card">
+            <div class="weather-stat-header">
+                <div class="weather-stat-icon rainfall">
+                    <i class="ri-rainy-line"></i>
+                </div>
+                <span class="weather-stat-title">Annual Rainfall</span>
+            </div>
+            <div class="weather-stat-values">
+                <div class="weather-stat-main">
+                    <span class="weather-stat-value">${rainfall.mean || '-'}</span>
+                    <span class="weather-stat-unit">mm/year</span>
+                </div>
+                <div class="weather-stat-details">
+                    <span class="weather-stat-detail">
+                        <i class="ri-add-line"></i> SD: ±${rainfall.std || '-'}mm
+                    </span>
+                    <span class="weather-stat-detail">
+                        <i class="ri-percent-line"></i> 98%: ${rainfall.reliability_98 || '-'}mm
+                    </span>
+                </div>
+            </div>
+        </div>
+    `;
+
+    $('#constructionWeatherStats').html(html);
+}
 
 function renderConstructionDetailHeatmap(monthlyStats) {
     if (!monthlyStats || monthlyStats.length === 0) return;
