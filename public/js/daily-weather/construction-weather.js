@@ -343,8 +343,13 @@ function renderConstructionMonthlyHeatmap(monthlyStats) {
     let html = '';
     monthlyStats.forEach(function(month) {
         const csi = month.csi;
+        const ratingLabel = csi.rating === 'excellent' ? 'Excellent for construction' :
+                          csi.rating === 'good' ? 'Good for construction' :
+                          csi.rating === 'fair' ? 'Fair - some limitations' :
+                          'Poor - avoid construction';
+        const tooltipText = `${month.month_short}: CSI Score ${csi.csi.toFixed(0)}/100 - ${ratingLabel}`;
         html += `
-            <div class="month-cell" data-rating="${csi.rating}" onclick="showMonthDetail(${month.month})">
+            <div class="month-cell" data-rating="${csi.rating}" onclick="showMonthDetail(${month.month})" title="${tooltipText}">
                 <div class="month-name">${month.month_short}</div>
                 <div class="month-csi">${csi.csi.toFixed(0)}</div>
                 <div class="month-rating">${csi.rating.replace('_', ' ')}</div>
@@ -522,6 +527,44 @@ function renderConstructionWeatherStats(annualStats, monthlyStats) {
 
     let html = `
         <div class="weather-stat-card">
+            <span class="tooltip-trigger"><i class="ri-question-line"></i></span>
+            <div class="tooltip-content">
+                <div class="tooltip-header">
+                    <div class="tooltip-header-icon temp-max"><i class="ri-temp-hot-line"></i></div>
+                    <div class="tooltip-header-text">
+                        <h4>Maximum Temperature</h4>
+                        <span>Daily highest temperature readings</span>
+                    </div>
+                </div>
+                <div class="tooltip-body">
+                    <div class="tooltip-section">
+                        <div class="tooltip-section-title">What it measures</div>
+                        <p>The highest temperature recorded each day, averaged across all years. High temperatures affect worker productivity and material curing.</p>
+                    </div>
+                    <div class="tooltip-section">
+                        <div class="tooltip-section-title">Values explained</div>
+                        <div class="tooltip-values-grid">
+                            <div class="tooltip-value-item">
+                                <div class="label">Mean (Average)</div>
+                                <div class="value high">${maxTemp.mean || '-'}°C</div>
+                            </div>
+                            <div class="tooltip-value-item">
+                                <div class="label">Extreme High</div>
+                                <div class="value high">${maxTempExtreme.mean || '-'}°C</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tooltip-section">
+                        <div class="tooltip-section-title">98% Reliability</div>
+                        <p>98% of the time, max temperature will be at or below this value.</p>
+                        <div class="tooltip-formula">98% = Mean + (2.055 × SD) = ${maxTemp.reliability_98 || '-'}°C</div>
+                    </div>
+                    <div class="tooltip-note">
+                        <i class="ri-lightbulb-line"></i>
+                        <span>For construction, temperatures above 35°C may require heat safety measures.</span>
+                    </div>
+                </div>
+            </div>
             <div class="weather-stat-header">
                 <div class="weather-stat-icon temp-max">
                     <i class="ri-temp-hot-line"></i>
@@ -545,6 +588,44 @@ function renderConstructionWeatherStats(annualStats, monthlyStats) {
         </div>
 
         <div class="weather-stat-card">
+            <span class="tooltip-trigger"><i class="ri-question-line"></i></span>
+            <div class="tooltip-content">
+                <div class="tooltip-header">
+                    <div class="tooltip-header-icon temp-min"><i class="ri-temp-cold-line"></i></div>
+                    <div class="tooltip-header-text">
+                        <h4>Minimum Temperature</h4>
+                        <span>Daily lowest temperature readings</span>
+                    </div>
+                </div>
+                <div class="tooltip-body">
+                    <div class="tooltip-section">
+                        <div class="tooltip-section-title">What it measures</div>
+                        <p>The lowest temperature recorded each day (usually at night/early morning), averaged across all years. Important for concrete curing and frost considerations.</p>
+                    </div>
+                    <div class="tooltip-section">
+                        <div class="tooltip-section-title">Values explained</div>
+                        <div class="tooltip-values-grid">
+                            <div class="tooltip-value-item">
+                                <div class="label">Mean (Average)</div>
+                                <div class="value low">${minTemp.mean || '-'}°C</div>
+                            </div>
+                            <div class="tooltip-value-item">
+                                <div class="label">Extreme Low</div>
+                                <div class="value low">${minTempExtreme.mean || '-'}°C</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tooltip-section">
+                        <div class="tooltip-section-title">98% Reliability</div>
+                        <p>98% of the time, min temperature will be at or above this value.</p>
+                        <div class="tooltip-formula">98% = Mean - (2.055 × SD) = ${minTemp.reliability_98 || '-'}°C</div>
+                    </div>
+                    <div class="tooltip-note">
+                        <i class="ri-lightbulb-line"></i>
+                        <span>Concrete should not be placed when temperature is below 5°C without special precautions.</span>
+                    </div>
+                </div>
+            </div>
             <div class="weather-stat-header">
                 <div class="weather-stat-icon temp-min">
                     <i class="ri-temp-cold-line"></i>
@@ -568,6 +649,44 @@ function renderConstructionWeatherStats(annualStats, monthlyStats) {
         </div>
 
         <div class="weather-stat-card">
+            <span class="tooltip-trigger"><i class="ri-question-line"></i></span>
+            <div class="tooltip-content">
+                <div class="tooltip-header">
+                    <div class="tooltip-header-icon temp-avg"><i class="ri-thermometer-line"></i></div>
+                    <div class="tooltip-header-text">
+                        <h4>Average Temperature</h4>
+                        <span>Daily mean temperature</span>
+                    </div>
+                </div>
+                <div class="tooltip-body">
+                    <div class="tooltip-section">
+                        <div class="tooltip-section-title">What it measures</div>
+                        <p>The average of daily maximum and minimum temperatures. This gives a general indication of the thermal environment for construction activities.</p>
+                    </div>
+                    <div class="tooltip-section">
+                        <div class="tooltip-section-title">Calculation method</div>
+                        <div class="tooltip-formula">Avg Temp = (Max Temp + Min Temp) / 2</div>
+                        <div class="tooltip-values-grid">
+                            <div class="tooltip-value-item">
+                                <div class="label">Calculated Average</div>
+                                <div class="value">${avgTemp}°C</div>
+                            </div>
+                            <div class="tooltip-value-item">
+                                <div class="label">Daily Range</div>
+                                <div class="value">${minTemp.mean || '-'} - ${maxTemp.mean || '-'}°C</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tooltip-section">
+                        <div class="tooltip-section-title">Ideal conditions</div>
+                        <p>15-30°C is generally optimal for most construction activities including concrete work and asphalt paving.</p>
+                    </div>
+                    <div class="tooltip-note">
+                        <i class="ri-lightbulb-line"></i>
+                        <span>This value is used in the CSI Temperature Score calculation (25% weight).</span>
+                    </div>
+                </div>
+            </div>
             <div class="weather-stat-header">
                 <div class="weather-stat-icon temp-avg">
                     <i class="ri-thermometer-line"></i>
@@ -591,6 +710,44 @@ function renderConstructionWeatherStats(annualStats, monthlyStats) {
         </div>
 
         <div class="weather-stat-card">
+            <span class="tooltip-trigger"><i class="ri-question-line"></i></span>
+            <div class="tooltip-content">
+                <div class="tooltip-header">
+                    <div class="tooltip-header-icon rainfall"><i class="ri-rainy-line"></i></div>
+                    <div class="tooltip-header-text">
+                        <h4>Annual Rainfall</h4>
+                        <span>Total precipitation per year</span>
+                    </div>
+                </div>
+                <div class="tooltip-body">
+                    <div class="tooltip-section">
+                        <div class="tooltip-section-title">What it measures</div>
+                        <p>Total rainfall accumulated over a year, measured in millimeters. This directly impacts the number of workable days for construction.</p>
+                    </div>
+                    <div class="tooltip-section">
+                        <div class="tooltip-section-title">Statistical values</div>
+                        <div class="tooltip-values-grid">
+                            <div class="tooltip-value-item">
+                                <div class="label">Mean (Average)</div>
+                                <div class="value rainfall">${rainfall.mean || '-'} mm</div>
+                            </div>
+                            <div class="tooltip-value-item">
+                                <div class="label">Std Deviation</div>
+                                <div class="value">±${rainfall.std || '-'} mm</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tooltip-section">
+                        <div class="tooltip-section-title">98% Reliability</div>
+                        <p>98% of years will have rainfall at or below this amount.</p>
+                        <div class="tooltip-formula">98% = Mean + (2.055 × SD) = ${rainfall.reliability_98 || '-'} mm</div>
+                    </div>
+                    <div class="tooltip-note">
+                        <i class="ri-lightbulb-line"></i>
+                        <span>Rainfall has the highest weight (30%) in the CSI formula as it most directly affects construction feasibility.</span>
+                    </div>
+                </div>
+            </div>
             <div class="weather-stat-header">
                 <div class="weather-stat-icon rainfall">
                     <i class="ri-rainy-line"></i>
@@ -623,8 +780,9 @@ function renderConstructionDetailHeatmap(monthlyStats) {
     let html = '';
     monthlyStats.forEach(function(month) {
         const csi = month.csi;
+        const tooltipText = `CSI ${csi.csi.toFixed(0)}: Rain(${csi.rainfall_score.toFixed(0)}) + Temp(${csi.temperature_score.toFixed(0)}) + Humidity(${csi.humidity_score.toFixed(0)}) + Sun(${csi.sunshine_score.toFixed(0)})`;
         html += `
-            <div class="month-cell" data-rating="${csi.rating}">
+            <div class="month-cell" data-rating="${csi.rating}" title="${tooltipText}">
                 <div class="month-name">${month.month_short}</div>
                 <div class="month-csi">${csi.csi.toFixed(0)}</div>
                 <div class="month-rating">${csi.rating.replace('_', ' ')}</div>
@@ -653,25 +811,28 @@ function renderConstructionScoreBreakdown(monthlyStats) {
     avgHumidity = (avgHumidity / count).toFixed(0);
     avgSunshine = (avgSunshine / count).toFixed(0);
 
+    // Calculate overall CSI
+    const overallCSI = (parseFloat(avgRain) * 0.30 + parseFloat(avgTemp) * 0.25 + parseFloat(avgHumidity) * 0.20 + parseFloat(avgSunshine) * 0.25).toFixed(0);
+
     const html = `
-        <div class="score-item rain">
+        <div class="score-item rain" title="Rainfall Score: Based on monthly rainfall. Lower rainfall = higher score. Weight: 30%">
             <div class="score-icon"><i class="ri-rainy-line"></i></div>
-            <div class="score-label">Rain Score</div>
+            <div class="score-label">Rain Score <span class="score-weight">(30%)</span></div>
             <div class="score-value" style="color: #3B82F6;">${avgRain}</div>
         </div>
-        <div class="score-item temp">
+        <div class="score-item temp" title="Temperature Score: Based on average temperature. Optimal range 15-30°C scores highest. Weight: 25%">
             <div class="score-icon"><i class="ri-temp-hot-line"></i></div>
-            <div class="score-label">Temp Score</div>
+            <div class="score-label">Temp Score <span class="score-weight">(25%)</span></div>
             <div class="score-value" style="color: #EF4444;">${avgTemp}</div>
         </div>
-        <div class="score-item humidity">
+        <div class="score-item humidity" title="Humidity Score: Based on relative humidity. Lower humidity = higher score for construction. Weight: 20%">
             <div class="score-icon"><i class="ri-drop-line"></i></div>
-            <div class="score-label">Humidity Score</div>
+            <div class="score-label">Humidity Score <span class="score-weight">(20%)</span></div>
             <div class="score-value" style="color: #8B5CF6;">${avgHumidity}</div>
         </div>
-        <div class="score-item sunshine">
+        <div class="score-item sunshine" title="Sunshine Score: Based on sunshine hours. More sunshine = better for construction activities. Weight: 25%">
             <div class="score-icon"><i class="ri-sun-line"></i></div>
-            <div class="score-label">Sunshine Score</div>
+            <div class="score-label">Sunshine Score <span class="score-weight">(25%)</span></div>
             <div class="score-value" style="color: #F59E0B;">${avgSunshine}</div>
         </div>
     `;
