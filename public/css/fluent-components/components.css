@@ -317,3 +317,151 @@
 
 .fluent-nav-tabs .fluent-nav-link:hover { color: var(--fluent-primary); background: rgba(0, 120, 212, 0.05); }
 .fluent-nav-tabs .fluent-nav-link.active { color: var(--fluent-primary); border-bottom-color: var(--fluent-primary); }
+
+/* ==================== RESPONSIVE COMPONENTS ==================== */
+
+/* Tablet - 768px to 992px */
+@media (max-width: 992px) {
+    .fluent-dropdown-menu {
+        min-width: 160px;
+    }
+
+    .fluent-stat-card {
+        padding: var(--fluent-space-md);
+    }
+
+    .fluent-stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .fluent-nav-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .fluent-nav-tabs .fluent-nav-link {
+        padding: var(--fluent-space-sm) var(--fluent-space-md);
+        white-space: nowrap;
+    }
+}
+
+/* Phone - below 768px */
+@media (max-width: 768px) {
+    /* Cards */
+    .fluent-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--fluent-space-sm);
+    }
+
+    .fluent-card-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    /* Dropdowns */
+    .fluent-dropdown-menu {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: auto;
+        max-width: 100%;
+        border-radius: var(--fluent-radius-xl) var(--fluent-radius-xl) 0 0;
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+
+    .fluent-dropdown-item {
+        padding: var(--fluent-space-sm) var(--fluent-space-md);
+    }
+
+    /* Alerts */
+    .fluent-alert {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .fluent-alert-icon {
+        margin-bottom: var(--fluent-space-xs);
+    }
+
+    /* Stats */
+    .fluent-stat-card {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--fluent-space-sm);
+    }
+
+    .fluent-stat-value {
+        font-size: 24px;
+    }
+
+    .fluent-stat-label {
+        font-size: 12px;
+    }
+
+    /* Empty state */
+    .fluent-empty-state {
+        padding: var(--fluent-space-lg);
+    }
+
+    .fluent-empty-icon {
+        font-size: 48px;
+    }
+
+    .fluent-empty-title {
+        font-size: 16px;
+    }
+
+    /* Nav tabs */
+    .fluent-nav-tabs {
+        padding: 0;
+    }
+
+    .fluent-nav-tabs .fluent-nav-link {
+        padding: var(--fluent-space-sm);
+        font-size: 13px;
+    }
+
+    .fluent-nav-tabs .fluent-nav-link i {
+        display: none;
+    }
+}
+
+/* Extra small - below 576px */
+@media (max-width: 576px) {
+    /* Buttons */
+    .fluent-btn {
+        font-size: 13px;
+    }
+
+    .fluent-btn-lg {
+        min-height: 36px;
+        font-size: 14px;
+    }
+
+    /* Cards */
+    .fluent-card-title {
+        font-size: 14px;
+    }
+
+    /* Badges */
+    .fluent-badge {
+        font-size: 11px;
+        padding: 2px 6px;
+    }
+
+    /* Stats */
+    .fluent-stat-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+
+    .fluent-stat-value {
+        font-size: 20px;
+    }
+}

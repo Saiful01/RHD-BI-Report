@@ -150,3 +150,49 @@
 @keyframes fluent-spin {
     to { transform: rotate(360deg); }
 }
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+    .fluent-loader-spinner {
+        width: 60px;
+        height: 60px;
+    }
+
+    .fluent-loader-ring:nth-child(1) { width: 60px; height: 60px; }
+    .fluent-loader-ring:nth-child(2) { width: 45px; height: 45px; }
+    .fluent-loader-ring:nth-child(3) { width: 30px; height: 30px; }
+
+    .fluent-loader-logo {
+        width: 24px;
+        height: 24px;
+    }
+
+    .fluent-loader-text {
+        font-size: 12px;
+    }
+
+    .fluent-spinner {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .fluent-loader-spinner {
+        width: 50px;
+        height: 50px;
+    }
+
+    .fluent-loader-ring:nth-child(1) { width: 50px; height: 50px; }
+    .fluent-loader-ring:nth-child(2) { width: 38px; height: 38px; }
+    .fluent-loader-ring:nth-child(3) { width: 26px; height: 26px; }
+
+    .fluent-loader-content {
+        gap: 16px;
+    }
+
+    .fluent-spinner {
+        width: 24px;
+        height: 24px;
+    }
+}

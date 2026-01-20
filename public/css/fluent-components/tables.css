@@ -161,3 +161,116 @@ table.dataTable tbody tr.selected:hover { background-color: var(--fluent-primary
 /* Compact Table Variant */
 .fluent-table-compact td,
 .fluent-table-compact th { padding: 8px 12px !important; }
+
+/* ==================== RESPONSIVE TABLES ==================== */
+
+/* Responsive wrapper - always use this around tables */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Tablet - 768px to 992px */
+@media (max-width: 992px) {
+    .fluent-table th,
+    .fluent-table td {
+        padding: var(--fluent-space-xs) var(--fluent-space-sm);
+        font-size: 13px;
+    }
+
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        float: none;
+        text-align: left;
+        margin-bottom: var(--fluent-space-sm);
+    }
+
+    .dataTables_wrapper .dataTables_info,
+    .dataTables_wrapper .dataTables_paginate {
+        float: none;
+        text-align: center;
+        margin-top: var(--fluent-space-sm);
+    }
+
+    .table-action-btn {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+/* Phone - below 768px */
+@media (max-width: 768px) {
+    .fluent-table {
+        font-size: 12px;
+    }
+
+    .fluent-table th,
+    .fluent-table td {
+        padding: 8px 6px;
+        white-space: nowrap;
+    }
+
+    .fluent-table th {
+        font-size: 11px;
+    }
+
+    .dataTables_wrapper {
+        padding: var(--fluent-space-sm) 0;
+    }
+
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        width: 100%;
+        display: block;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        width: 100%;
+        max-width: none;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 4px 8px !important;
+        font-size: 12px;
+    }
+
+    .table-actions {
+        gap: 2px;
+    }
+
+    .table-action-btn {
+        width: 26px;
+        height: 26px;
+        font-size: 12px;
+    }
+
+    /* Hide less important columns on mobile */
+    .hide-mobile {
+        display: none !important;
+    }
+}
+
+/* Extra small - below 576px */
+@media (max-width: 576px) {
+    .fluent-table th,
+    .fluent-table td {
+        padding: 6px 4px;
+        font-size: 11px;
+    }
+
+    .fluent-table-compact th,
+    .fluent-table-compact td {
+        padding: 4px 6px !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 3px 6px !important;
+        margin: 0 1px !important;
+    }
+
+    .table-action-btn {
+        width: 24px;
+        height: 24px;
+    }
+}
