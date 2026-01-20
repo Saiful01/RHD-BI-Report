@@ -70,6 +70,9 @@
                         required
                         placeholder="Enter your password"
                     >
+                    <button type="button" class="password-toggle" id="passwordToggle" aria-label="Toggle password visibility">
+                        <i class="ri-eye-line" id="eyeIcon"></i>
+                    </button>
                 </div>
                 @if($errors->has('password'))
                     <div class="fluent-invalid-feedback">
@@ -131,11 +134,61 @@
 .login-btn .spinner {
     flex-shrink: 0;
 }
+
+/* Password Toggle */
+.fluent-input-group {
+    position: relative;
+}
+.fluent-input-group .fluent-input {
+    padding-right: 44px;
+}
+.password-toggle {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: var(--fluent-radius-md);
+    color: var(--fluent-text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+.password-toggle:hover {
+    background: var(--fluent-gray-20);
+    color: var(--fluent-text-primary);
+}
+.password-toggle:active {
+    background: var(--fluent-gray-30);
+}
+.password-toggle i {
+    font-size: 18px;
+}
 </style>
 
 <script>
 document.querySelector('form').addEventListener('submit', function(e) {
     document.getElementById('loginBtn').classList.add('loading');
+});
+
+document.getElementById('passwordToggle').addEventListener('click', function() {
+    const passwordInput = document.getElementById('password');
+    const eyeIcon = document.getElementById('eyeIcon');
+
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.classList.remove('ri-eye-line');
+        eyeIcon.classList.add('ri-eye-off-line');
+    } else {
+        passwordInput.type = 'password';
+        eyeIcon.classList.remove('ri-eye-off-line');
+        eyeIcon.classList.add('ri-eye-line');
+    }
 });
 </script>
     </div>
