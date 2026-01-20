@@ -117,8 +117,8 @@
                                 <path d="M18 5l-2 2M18 5l2 2" stroke="#3B82F6" stroke-width="1.5" stroke-linecap="round"/>
                             </svg>
                         </span>
-                        <span class="fluent-nav-text">Construction Weather</span>
-                        <span class="fluent-nav-tooltip">Construction Weather Analysis</span>
+                        <span class="fluent-nav-text">Rainfall & Sunshine Analysis</span>
+                        <span class="fluent-nav-tooltip">Rainfall & Sunshine Analysis</span>
                     </a>
                 </div>
             @endcan
