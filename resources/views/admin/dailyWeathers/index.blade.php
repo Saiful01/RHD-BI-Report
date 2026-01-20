@@ -148,6 +148,7 @@
     </div>
 </div>
 
+
 <!-- ==================== CALENDAR HEATMAP VIEW ==================== -->
 <div id="calendarView" class="view-section" style="display: none;">
     <div class="calendar-controls">
@@ -3456,6 +3457,12 @@ document.getElementById('weatherForm').addEventListener('submit', function(e) {
 function formatDate(dateStr) {
     const date = new Date(dateStr);
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+
+// View station details
+function viewStationDetails(stationId) {
+    window.location.href = '/admin/stations?view=' + stationId;
 }
 </script>
 @endsection

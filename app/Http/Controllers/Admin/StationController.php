@@ -323,4 +323,102 @@ class StationController extends Controller
             ]
         ]);
     }
+
+    /**
+     * Get all stations data for map view
+     */
+    public function mapData(Request $request)
+    {
+        $stations = Station::select('id', 'station_name', 'lat', 'lon', 'elevation', 'status')
+            ->whereNotNull('lat')
+            ->whereNotNull('lon')
+            ->get()
+            ->map(function ($station) {
+                // Get latest weather data
+                $latestWeather = DailyWeather::where('station_id', $station->id)
+                    ->orderBy('record_date', 'desc')
+                    ->first();
+
+                // Get record count and date range
+                $recordStats = DailyWeather::where('station_id', $station->id)
+                    ->selectRaw('COUNT(*) as total_records, MIN(record_date) as first_date, MAX(record_date) as last_date')
+                    ->first();
+
+                // Get current year stats
+                $currentYear = date('Y');
+                $yearlyStats = DailyWeather::where('station_id', $station->id)
+                    ->whereYear('record_date', $currentYear)
+                    ->selectRaw('
+                        ROUND(AVG(max_temp), 1) as avg_max_temp,
+                        ROUND(AVG(mini_temp), 1) as avg_min_temp,
+                        ROUND(AVG(humidity), 1) as avg_humidity,
+                        ROUND(SUM(total_rain_fall), 1) as total_rainfall,
+                        ROUND(MAX(max_temp), 1) as highest_temp,
+                        ROUND(MIN(mini_temp), 1) as lowest_temp,
+                        COUNT(*) as days_recorded
+                    ')
+                    ->first();
+
+                // Get last 7 days trend
+                $weekTrend = DailyWeather::where('station_id', $station->id)
+                    ->orderBy('record_date', 'desc')
+                    ->take(7)
+                    ->get(['record_date', 'max_temp', 'mini_temp', 'total_rain_fall'])
+                    ->map(function ($day) {
+                        return [
+                            'date' => Carbon::parse($day->getRawOriginal('record_date'))->format('M d'),
+                            'max' => (float) $day->max_temp,
+                            'min' => (float) $day->mini_temp,
+                            'rain' => (float) $day->total_rain_fall,
+                        ];
+                    })->reverse()->values();
+
+                return [
+                    'id' => $station->id,
+                    'name' => $station->station_name,
+                    'lat' => (float) $station->lat,
+                    'lon' => (float) $station->lon,
+                    'elevation' => $station->elevation,
+                    'status' => in_array($station->status, ['1', 'active', 1]) ? 'active' : 'inactive',
+                    'latest_data' => $latestWeather ? [
+                        'date' => Carbon::parse($latestWeather->getRawOriginal('record_date'))->format('M d, Y'),
+                        'max_temp' => (float) $latestWeather->max_temp,
+                        'min_temp' => (float) $latestWeather->mini_temp,
+                        'avg_temp' => (float) $latestWeather->avg_temp,
+                        'humidity' => (float) $latestWeather->humidity,
+                        'rainfall' => (float) $latestWeather->total_rain_fall,
+                        'sunshine' => (float) $latestWeather->total_sunshine_hour,
+                        'dew_point' => (float) $latestWeather->dew_point,
+                    ] : null,
+                    'record_stats' => [
+                        'total_records' => (int) ($recordStats->total_records ?? 0),
+                        'first_date' => $recordStats->first_date ? Carbon::parse($recordStats->first_date)->format('M Y') : null,
+                        'last_date' => $recordStats->last_date ? Carbon::parse($recordStats->last_date)->format('M Y') : null,
+                    ],
+                    'yearly_stats' => $yearlyStats && $yearlyStats->days_recorded > 0 ? [
+                        'year' => $currentYear,
+                        'avg_max_temp' => (float) $yearlyStats->avg_max_temp,
+                        'avg_min_temp' => (float) $yearlyStats->avg_min_temp,
+                        'avg_humidity' => (float) $yearlyStats->avg_humidity,
+                        'total_rainfall' => (float) $yearlyStats->total_rainfall,
+                        'highest_temp' => (float) $yearlyStats->highest_temp,
+                        'lowest_temp' => (float) $yearlyStats->lowest_temp,
+                        'days_recorded' => (int) $yearlyStats->days_recorded,
+                    ] : null,
+                    'week_trend' => $weekTrend,
+                ];
+            });
+
+        $stats = [
+            'total' => $stations->count(),
+            'active' => $stations->where('status', 'active')->count(),
+            'inactive' => $stations->where('status', 'inactive')->count(),
+        ];
+
+        return response()->json([
+            'success' => true,
+            'stations' => $stations,
+            'stats' => $stats
+        ]);
+    }
 }
