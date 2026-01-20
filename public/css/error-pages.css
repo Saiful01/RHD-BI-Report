@@ -1,0 +1,542 @@
+/* Error Pages Styles - Fluent UI Theme */
+
+:root {
+    --error-red: #D13438;
+    --error-red-light: #F1707A;
+    --error-red-dark: #A4262C;
+    --warning-gold: #FFB900;
+    --warning-gold-light: #FFC83D;
+    --info-blue: #0078D4;
+    --info-blue-light: #00BCF2;
+    --maintenance-purple: #8764B8;
+    --maintenance-purple-light: #B4A0FF;
+}
+
+/* Base Error Page */
+.error-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+/* Highway Background */
+.error-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 58, 95, 0.85) 100%),
+        url('https://images.unsplash.com/photo-1767851522846-9740ecd09cea?w=1920&q=80&fit=crop');
+    background-size: cover;
+    background-position: center;
+    animation: slowPan 30s ease-in-out infinite alternate;
+    z-index: -3;
+}
+
+/* Road Surface Overlay */
+.error-page::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 50px,
+            rgba(255, 200, 0, 0.03) 50px,
+            rgba(255, 200, 0, 0.03) 52px
+        );
+    animation: roadLines 20s linear infinite;
+    z-index: -2;
+}
+
+@keyframes slowPan {
+    0% {
+        background-position: 0% 30%;
+        transform: scale(1);
+    }
+    50% {
+        background-position: 100% 50%;
+        transform: scale(1.05);
+    }
+    100% {
+        background-position: 50% 70%;
+        transform: scale(1);
+    }
+}
+
+@keyframes roadLines {
+    0% { transform: translateX(-100px); }
+    100% { transform: translateX(100px); }
+}
+
+/* Floating Vehicles */
+.floating-vehicles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.vehicle {
+    position: absolute;
+    font-size: 28px;
+    opacity: 0.12;
+    color: #fff;
+    animation: floatVehicle linear infinite;
+}
+
+.vehicle:nth-child(1) { top: 10%; left: -60px; animation-duration: 25s; animation-delay: 0s; }
+.vehicle:nth-child(2) { top: 30%; left: -60px; animation-duration: 20s; animation-delay: 5s; }
+.vehicle:nth-child(3) { top: 50%; left: -60px; animation-duration: 22s; animation-delay: 10s; }
+.vehicle:nth-child(4) { top: 70%; left: -60px; animation-duration: 28s; animation-delay: 3s; }
+.vehicle:nth-child(5) { top: 85%; left: -60px; animation-duration: 18s; animation-delay: 8s; }
+
+@keyframes floatVehicle {
+    0% {
+        transform: translateX(-60px);
+        opacity: 0;
+    }
+    10% { opacity: 0.12; }
+    90% { opacity: 0.12; }
+    100% {
+        transform: translateX(calc(100vw + 60px));
+        opacity: 0;
+    }
+}
+
+/* Road Markings Animation */
+.road-markings {
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.road-line {
+    position: absolute;
+    width: 60px;
+    height: 4px;
+    background: rgba(255, 200, 0, 0.3);
+    border-radius: 2px;
+    animation: roadMarkings 3s linear infinite;
+}
+
+.road-line:nth-child(1) { left: 0%; animation-delay: 0s; }
+.road-line:nth-child(2) { left: 25%; animation-delay: 0.6s; }
+.road-line:nth-child(3) { left: 50%; animation-delay: 1.2s; }
+.road-line:nth-child(4) { left: 75%; animation-delay: 1.8s; }
+.road-line:nth-child(5) { left: 100%; animation-delay: 2.4s; }
+
+@keyframes roadMarkings {
+    0% {
+        transform: translateX(-100px);
+        opacity: 0;
+    }
+    20% { opacity: 0.3; }
+    80% { opacity: 0.3; }
+    100% {
+        transform: translateX(100vw);
+        opacity: 0;
+    }
+}
+
+/* Error Container */
+.error-container {
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Error Card */
+.error-card {
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: cardAppear 0.5s ease-out;
+}
+
+@keyframes cardAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Error Header */
+.error-header {
+    text-align: center;
+    padding: 40px 32px 32px;
+    background: linear-gradient(135deg, var(--error-red) 0%, var(--error-red-dark) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.error-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%);
+    animation: headerGlow 8s ease-in-out infinite;
+}
+
+@keyframes headerGlow {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(30px, 30px); }
+}
+
+/* Header Color Variants */
+.error-header.warning {
+    background: linear-gradient(135deg, var(--warning-gold) 0%, #E6A700 100%);
+}
+
+.error-header.info {
+    background: linear-gradient(135deg, var(--info-blue) 0%, #005A9E 100%);
+}
+
+.error-header.maintenance {
+    background: linear-gradient(135deg, var(--maintenance-purple) 0%, #5C4B8A 100%);
+}
+
+/* Error Icon */
+.error-icon {
+    width: 88px;
+    height: 88px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    position: relative;
+    animation: iconPulse 2s ease-in-out infinite;
+}
+
+.error-icon i {
+    font-size: 42px;
+    color: #fff;
+}
+
+@keyframes iconPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+    }
+}
+
+/* Icon Animation Variants */
+.error-icon.shake {
+    animation: iconShake 0.5s ease-in-out infinite;
+}
+
+@keyframes iconShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-5px) rotate(-5deg); }
+    40% { transform: translateX(5px) rotate(5deg); }
+    60% { transform: translateX(-5px) rotate(-5deg); }
+    80% { transform: translateX(5px) rotate(5deg); }
+}
+
+.error-icon.bounce {
+    animation: iconBounce 1s ease infinite;
+}
+
+@keyframes iconBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.error-icon.spin {
+    animation: iconSpin 3s linear infinite;
+}
+
+@keyframes iconSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error-icon.lost {
+    animation: iconLost 4s ease-in-out infinite;
+}
+
+@keyframes iconLost {
+    0%, 100% {
+        transform: translateX(0) rotate(0deg);
+    }
+    25% {
+        transform: translateX(-15px) rotate(-10deg);
+    }
+    75% {
+        transform: translateX(15px) rotate(10deg);
+    }
+}
+
+/* Error Code */
+.error-code {
+    font-size: 72px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    line-height: 1;
+    letter-spacing: -2px;
+}
+
+/* Error Body */
+.error-body {
+    padding: 32px;
+    text-align: center;
+}
+
+.error-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #201F1E;
+    margin: 0 0 12px;
+}
+
+.error-message {
+    font-size: 15px;
+    color: #605E5C;
+    margin: 0 0 28px;
+    line-height: 1.6;
+}
+
+/* Error Actions */
+.error-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Buttons */
+.error-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.error-btn-primary {
+    background: linear-gradient(135deg, var(--info-blue) 0%, #005A9E 100%);
+    color: #fff;
+    box-shadow: 0 4px 14px -3px rgba(0, 120, 212, 0.4);
+}
+
+.error-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px -3px rgba(0, 120, 212, 0.5);
+    color: #fff;
+}
+
+.error-btn-secondary {
+    background: #F3F2F1;
+    color: #323130;
+    border: 1px solid #EDEBE9;
+}
+
+.error-btn-secondary:hover {
+    background: #EDEBE9;
+    transform: translateY(-2px);
+    color: #323130;
+}
+
+.error-btn-warning {
+    background: linear-gradient(135deg, var(--warning-gold) 0%, #E6A700 100%);
+    color: #201F1E;
+    box-shadow: 0 4px 14px -3px rgba(255, 185, 0, 0.4);
+}
+
+.error-btn-warning:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px -3px rgba(255, 185, 0, 0.5);
+    color: #201F1E;
+}
+
+/* Countdown Timer */
+.countdown-container {
+    margin: 20px 0;
+    padding: 16px;
+    background: #F3F2F1;
+    border-radius: 8px;
+}
+
+.countdown-label {
+    font-size: 13px;
+    color: #605E5C;
+    margin-bottom: 8px;
+}
+
+.countdown-timer {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--error-red);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Extra Info */
+.error-extra {
+    margin: 20px 0;
+    padding: 16px;
+    background: #FAF9F8;
+    border-radius: 8px;
+    border-left: 4px solid var(--info-blue);
+}
+
+.error-extra-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #323130;
+    margin-bottom: 8px;
+}
+
+.error-extra-text {
+    font-size: 13px;
+    color: #605E5C;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* RHD Badge */
+.rhd-badge {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 10px 24px;
+    border-radius: 30px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    letter-spacing: 1px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rhd-badge i {
+    font-size: 14px;
+}
+
+/* Lost Vehicle Animation (for 404) */
+.lost-vehicle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 100px;
+    color: rgba(255, 255, 255, 0.1);
+    animation: lostVehicleDrive 6s ease-in-out infinite;
+    z-index: 0;
+}
+
+@keyframes lostVehicleDrive {
+    0%, 100% {
+        transform: translate(-50%, -50%) rotate(0deg);
+        opacity: 0.1;
+    }
+    25% {
+        transform: translate(-70%, -40%) rotate(-15deg);
+        opacity: 0.15;
+    }
+    50% {
+        transform: translate(-30%, -60%) rotate(10deg);
+        opacity: 0.1;
+    }
+    75% {
+        transform: translate(-60%, -55%) rotate(-5deg);
+        opacity: 0.15;
+    }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .error-container {
+        max-width: 100%;
+    }
+
+    .error-header {
+        padding: 32px 24px 24px;
+    }
+
+    .error-icon {
+        width: 72px;
+        height: 72px;
+    }
+
+    .error-icon i {
+        font-size: 34px;
+    }
+
+    .error-code {
+        font-size: 56px;
+    }
+
+    .error-body {
+        padding: 24px;
+    }
+
+    .error-title {
+        font-size: 20px;
+    }
+
+    .error-actions {
+        flex-direction: column;
+    }
+
+    .error-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .rhd-badge {
+        bottom: 16px;
+        padding: 8px 16px;
+        font-size: 10px;
+    }
+}
