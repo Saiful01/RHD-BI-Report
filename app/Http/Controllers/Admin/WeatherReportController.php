@@ -21,22 +21,24 @@ class WeatherReportController extends Controller
         $stations = Station::pluck('station_name', 'id');
         $reportData = [];
         $trendData = [];
-
+        $stdChartData = [
+            'labels' => [],
+            'high_std' => [],
+            'low_std' => []
+        ];
 
         if (!$request->has('station_ids')) {
-
             $defaultStationIds = Station::orderBy('id', 'asc')->take(2)->pluck('id')->toArray();
 
             $request->merge([
                 'station_ids'    => $defaultStationIds,
                 'from_date'      => '2020-01-01',
                 'to_date'        => '2025-01-01',
-                'sd_type'        => '1',
+                'sd_type'        => '1', // Default Population
                 'max_avg_value'  => 7,
                 'min_avg_value'  => 1,
             ]);
         }
-
 
         if ($request->has('station_ids') && !empty($request->station_ids)) {
             $dailyRecords = DailyWeather::whereIn('station_id', $request->station_ids)
@@ -50,9 +52,7 @@ class WeatherReportController extends Controller
             foreach ($groupedData as $stationId => $records) {
                 $station = $records->first()->station;
                 $stationName = $station->station_name;
-                $lat = $station->lat ?? 23.8;
-
-
+                $lat = $station->lat ?? 23.8; // Default Latitude for Bangladesh
 
                 $highTemps = $records->pluck('max_temp')
                     ->filter(fn($v) => !empty($v) && (float)$v != 0)
@@ -62,9 +62,6 @@ class WeatherReportController extends Controller
                     ->values()
                     ->toArray();
 
-
-
-
                 $lowTemps = $records->pluck('mini_temp')
                     ->filter(fn($v) => !empty($v) && (float)$v != 0)
                     ->map(fn($v) => (float)$v)
@@ -72,6 +69,7 @@ class WeatherReportController extends Controller
                     ->take($request->min_avg_value)
                     ->values()
                     ->toArray();
+
 
                 $highestMaxTemp = count($highTemps) ? max($highTemps) : 0;
                 $lowestMiniTemp = count($lowTemps) ? min($lowTemps) : 0;
@@ -83,7 +81,7 @@ class WeatherReportController extends Controller
                 $highStd = $this->calculateStandardDeviation($highTemps, $isPopulation);
 
                 $lowAvg = count($lowTemps) ? array_sum($lowTemps)/count($lowTemps) : 0;
-                $lowStd = $this->calculateStandardDeviation($lowTemps, $isPopulation); // এখানে $lowTemps হবে
+                $lowStd = $this->calculateStandardDeviation($lowTemps, $isPopulation);
 
 
                 $maxAir98 = $highestMaxTemp + (2 * $highStd);
@@ -92,12 +90,12 @@ class WeatherReportController extends Controller
                 $maxAir50 = $highestMaxTemp;
                 $minAir50 = $lowestMiniTemp;
 
-
                 $maxPVT_98 = $this->calculatePVT($maxAir98, $lat);
                 $minPVT_98 = $this->calculatePVT($minAir98, $lat);
 
                 $maxPVT_50 = $this->calculatePVT($maxAir50, $lat);
                 $minPVT_50 = $this->calculatePVT($minAir50, $lat);
+
 
                 $reportData[] = [
                     'station'  => $stationName,
@@ -118,10 +116,21 @@ class WeatherReportController extends Controller
                         'min_pvt' => round($minPVT_50, 2),
                     ]
                 ];
+
+                $stdChartData['labels'][] = $stationName;
+                $stdChartData['high_std'][] = round($highStd, 3);
+                $stdChartData['low_std'][] = round($lowStd, 3);
+
+                $trendData[$stationName] = $records->map(function($record) {
+                    return [
+                        't' => $record->record_date,
+                        'y' => round($record->max_temp, 2)
+                    ];
+                });
             }
         }
 
-        return view('admin.weatherReports.index', compact('stations', 'reportData', 'trendData'));
+        return view('admin.weatherReports.index', compact('stations', 'reportData', 'trendData', 'stdChartData'));
     }
 
 
