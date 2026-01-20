@@ -39,6 +39,7 @@
     <link href="{{ asset('css/fluent-components/components.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/fluent-components/forms.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/fluent-components/tables.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/fluent-components/modals.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/fluent-components/utilities.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/fluent-utilities.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/context-menu.css') }}" rel="stylesheet" />
