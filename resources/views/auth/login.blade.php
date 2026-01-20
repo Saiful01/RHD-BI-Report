@@ -79,7 +79,7 @@
             </div>
 
             <div class="fluent-form-group">
-                <label class="fluent-checkbox">
+                <label class="fluent-checkbox-label">
                     <input type="checkbox" name="remember" id="remember">
                     <span>{{ trans('global.remember_me') }}</span>
                 </label>

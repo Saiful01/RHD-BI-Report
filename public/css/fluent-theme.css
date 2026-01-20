@@ -6,6 +6,7 @@
   /* Primary Colors - Azure Blue */
   --fluent-primary: #0078D4;
   --fluent-primary-hover: #106EBE;
+  --fluent-primary-dark: #106EBE;
   --fluent-primary-active: #005A9E;
   --fluent-primary-light: #DEECF9;
   --fluent-primary-lighter: #EFF6FC;
@@ -21,6 +22,7 @@
   --fluent-gray-130: #605E5C;
   --fluent-gray-90: #A19F9D;
   --fluent-gray-60: #C8C6C4;
+  --fluent-gray-50: #D6D4D2;
   --fluent-gray-40: #D2D0CE;
   --fluent-gray-30: #EDEBE9;
   --fluent-gray-20: #F3F2F1;
